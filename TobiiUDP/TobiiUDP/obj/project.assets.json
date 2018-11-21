@@ -1,0 +1,242 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.6": {
+      "Tobii.Interaction/0.7.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Tobii.Interaction.Model.dll": {},
+          "lib/net45/Tobii.Interaction.Net.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Tobii.Interaction.Model.dll": {},
+          "lib/net45/Tobii.Interaction.Net.dll": {}
+        },
+        "build": {
+          "build/Tobii.Interaction.targets": {}
+        }
+      },
+      "Tobii.StreamEngine/2.2.2.363": {
+        "type": "package",
+        "build": {
+          "build/Tobii.StreamEngine.targets": {}
+        }
+      },
+      "Tobii.StreamEngine.Native/2.2.2.363": {
+        "type": "package",
+        "build": {
+          "build/Tobii.StreamEngine.Native.targets": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.6/win": {
+      "Tobii.Interaction/0.7.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Tobii.Interaction.Model.dll": {},
+          "lib/net45/Tobii.Interaction.Net.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Tobii.Interaction.Model.dll": {},
+          "lib/net45/Tobii.Interaction.Net.dll": {}
+        },
+        "build": {
+          "build/Tobii.Interaction.targets": {}
+        }
+      },
+      "Tobii.StreamEngine/2.2.2.363": {
+        "type": "package",
+        "build": {
+          "build/Tobii.StreamEngine.targets": {}
+        }
+      },
+      "Tobii.StreamEngine.Native/2.2.2.363": {
+        "type": "package",
+        "build": {
+          "build/Tobii.StreamEngine.Native.targets": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.6/win-x64": {
+      "Tobii.Interaction/0.7.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Tobii.Interaction.Model.dll": {},
+          "lib/net45/Tobii.Interaction.Net.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Tobii.Interaction.Model.dll": {},
+          "lib/net45/Tobii.Interaction.Net.dll": {}
+        },
+        "build": {
+          "build/Tobii.Interaction.targets": {}
+        }
+      },
+      "Tobii.StreamEngine/2.2.2.363": {
+        "type": "package",
+        "build": {
+          "build/Tobii.StreamEngine.targets": {}
+        }
+      },
+      "Tobii.StreamEngine.Native/2.2.2.363": {
+        "type": "package",
+        "build": {
+          "build/Tobii.StreamEngine.Native.targets": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.6/win-x86": {
+      "Tobii.Interaction/0.7.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Tobii.Interaction.Model.dll": {},
+          "lib/net45/Tobii.Interaction.Net.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Tobii.Interaction.Model.dll": {},
+          "lib/net45/Tobii.Interaction.Net.dll": {}
+        },
+        "build": {
+          "build/Tobii.Interaction.targets": {}
+        }
+      },
+      "Tobii.StreamEngine/2.2.2.363": {
+        "type": "package",
+        "build": {
+          "build/Tobii.StreamEngine.targets": {}
+        }
+      },
+      "Tobii.StreamEngine.Native/2.2.2.363": {
+        "type": "package",
+        "build": {
+          "build/Tobii.StreamEngine.Native.targets": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Tobii.Interaction/0.7.3": {
+      "sha512": "FX1vf+cLEp+WW3ifv3GVmFXeNGghjo2adt8DiAMyoCfGqeoNM4dzL5CoMYbhHzJQoRdTazVVBIxUh3QXvoBQqg==",
+      "type": "package",
+      "path": "tobii.interaction/0.7.3",
+      "files": [
+        "build/AnyCPU/Tobii.EyeX.Client.dll",
+        "build/Tobii.Interaction.targets",
+        "build/x64/Tobii.EyeX.Client.dll",
+        "build/x86/Tobii.EyeX.Client.dll",
+        "lib/net45/Tobii.Interaction.Model.dll",
+        "lib/net45/Tobii.Interaction.Net.dll",
+        "license/Tobii_Core_SDK_and_Gaming_SDK_License_Agreement_v_2.pdf",
+        "license/Tobii_Core_SDK_and_Gaming_SDK_License_Agreement_v_Mandarin.pdf",
+        "readme.txt",
+        "tobii.interaction.0.7.3.nupkg.sha512",
+        "tobii.interaction.nuspec"
+      ]
+    },
+    "Tobii.StreamEngine/2.2.2.363": {
+      "sha512": "KhNZfIIU2tZ1fTR1Ly+Px0RromwWW9jgg7AXW9xlN0/gxWpeVRvh49Ijbc2g2a0S9J2SIsk25uMtC8Tzx2NinA==",
+      "type": "package",
+      "path": "tobii.streamengine/2.2.2.363",
+      "files": [
+        "build/AnyCPU/tobii_stream_engine.dll",
+        "build/Tobii.StreamEngine.targets",
+        "build/x64/tobii_stream_engine.dll",
+        "build/x86/tobii_stream_engine.dll",
+        "content/Tobii/API-Reference.pdf",
+        "content/Tobii/SDK-License_en.pdf",
+        "content/Tobii/SDK-License_zh.pdf",
+        "content/Tobii/Tobii.StreamEngine.Interop.cs",
+        "tobii.streamengine.2.2.2.363.nupkg.sha512",
+        "tobii.streamengine.nuspec"
+      ]
+    },
+    "Tobii.StreamEngine.Native/2.2.2.363": {
+      "sha512": "pfVvp0VKRCfiNpCK8stD1N28YSXAfJVVL3es6u2THFvtj52cT6AuKB2XMYmHBTmEw4bAiJDBN6WGLKQYtFP45w==",
+      "type": "package",
+      "path": "tobii.streamengine.native/2.2.2.363",
+      "files": [
+        "build/Tobii.StreamEngine.Native.targets",
+        "build/native/include/tobii/tobii.h",
+        "build/native/include/tobii/tobii_engine.h",
+        "build/native/include/tobii/tobii_streams.h",
+        "build/native/include/tobii/tobii_wearable.h",
+        "build/native/lib/x64/tobii_stream_engine.dll",
+        "build/native/lib/x64/tobii_stream_engine.lib",
+        "build/native/lib/x86/tobii_stream_engine.dll",
+        "build/native/lib/x86/tobii_stream_engine.lib",
+        "content/Tobii/API-Reference.pdf",
+        "content/Tobii/SDK-License_en.pdf",
+        "content/Tobii/SDK-License_zh.pdf",
+        "tobii.streamengine.native.2.2.2.363.nupkg.sha512",
+        "tobii.streamengine.native.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.6": [
+      "Tobii.Interaction >= 0.7.3",
+      "Tobii.StreamEngine >= 2.2.2.363",
+      "Tobii.StreamEngine.Native >= 2.2.2.363"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\pfeif\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\pfeif\\Repos\\TurtleCounting\\TobiiUDP\\TobiiUDP\\TobiiUDP.csproj",
+      "projectName": "TobiiUDP",
+      "projectPath": "C:\\Users\\pfeif\\Repos\\TurtleCounting\\TobiiUDP\\TobiiUDP\\TobiiUDP.csproj",
+      "packagesPath": "C:\\Users\\pfeif\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pfeif\\Repos\\TurtleCounting\\TobiiUDP\\TobiiUDP\\obj\\",
+      "projectStyle": "PackageReference",
+      "skipContentFileWrite": true,
+      "configFilePaths": [
+        "C:\\Users\\pfeif\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net46"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net46": {
+          "projectReferences": {}
+        }
+      }
+    },
+    "frameworks": {
+      "net46": {
+        "dependencies": {
+          "Tobii.Interaction": {
+            "target": "Package",
+            "version": "[0.7.3, )"
+          },
+          "Tobii.StreamEngine": {
+            "target": "Package",
+            "version": "[2.2.2.363, )"
+          },
+          "Tobii.StreamEngine.Native": {
+            "target": "Package",
+            "version": "[2.2.2.363, )"
+          }
+        }
+      }
+    },
+    "runtimes": {
+      "win": {
+        "#import": []
+      },
+      "win-x64": {
+        "#import": []
+      },
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}

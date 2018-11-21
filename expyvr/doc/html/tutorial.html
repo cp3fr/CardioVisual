@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="main.css" />
+	<title>ExpyVR Tutorial</title>
+</head>
+
+<body>
+<div id="container">
+<iframe class="headerIframe" src="header.html"></iframe>
+
+<div id="center">
+<h1>Experiment Designer Tutorial</h1>
+<h2>Designing</h2>
+<h3>Populating the Flow</h3>
+When opening the Experiment Designer an empty experiment is created.
+<img alt="empty expyvr window" src="images/windowempty.png" />
+We can add a routine to the flow by clicking on the <i>Add Routine</i> button. We give it the name "trial" and leave the position in the flow at "0".
+<img alt="ExpyVR Tutorial" src="images/addroutine.png" />
+Our flow now shows the newly created routine.
+<img alt="ExpyVR Tutorial" src="images/flowwithroutine.png" />
+Next we want to insert a loop to repeat the routine "trial" four times. Clicking on <i>Add Loop</i> brings up a dialog where we enter the values as seen in the screenshot. This will create a loop that will be followed four times and each time will select either "sync" or "async" in a balanced way.
+<img alt="trial properties" src="images/trialproperty.png" />
+Now we want to insert a short pause that will last between 1 and 1.5 seconds after the trial. After clicking on <i>Add ISI</i> we set the following values:
+<img alt="ExpyVR Tutorial" src="images/isiproperty.png" />
+The position corresponds to the little circles that are shown in the flow:
+<img alt="ExpyVR Tutorial" src="images/flowpositions.png" />
+The flow of our experiment is now finished and the Experiment Designer should look like this:
+<img alt="ExpyVR Tutorial" src="images/windowwithflow.png" />
+
+<h3>Creating an instance of component</h3>
+Before we can run the experiment we have to define what exactly happens inside our experiment. We will use a text component. To create an instance of the HudText component ('HUD' stands for head-up display), we have to press on the corresponding button in the <i>Components</i> pane on the right side of the window:
+<img alt="ExpyVR Tutorial" src="images/iconHUDtext.png" />
+This brings up the following dialog. We leave the name as "hudText", but we could change it to any label we like. The other settings are for defining what exactly our text component does in each configuration. We first give a text to be shown in the default configuration, and do not change the other settings (bellow on the left). We then create another configuration that we call e.g. 'asynchronous'. For the 'asynchronous' configuration, we can change the text accordingly by checking off the flag 'as in standard' (bellow on the right).
+<img alt="ExpyVR Tutorial" src="images/instancecreate.png" />
+<img alt="ExpyVR Tutorial" src="images/instanceconfiguraitons.png" />
+This text component is now added in the list of experiment components (in the left of the window):
+<img alt="ExpyVR Tutorial" src="images/windowwithinstance.png" />
+
+
+<h3>Defining Experimental Conditions</h3>
+As you can see at the top of the centre pane, there are already two experimental conditions <i>async</i> and <i>sync</i>. These where set up automatically because the routine <i>trial</i> is inside the <i>shuffle</i> loop that defines these two variables. We now need to add our <i>hudText</i> component to the conditions. To do this, click on the component on the left and choose <i>add to all conditions</i>:
+<img alt="ExpyVR Tutorial" src="images/addinstancetocondition.png" />
+This pops up the following dialog. This allows us to define <i>display</i> and <i>activation</i> timings. For now we just leave 1 second duration for each:
+<img alt="ExpyVR Tutorial" src="images/addinstancetoallconditions.png" />
+We now have a time-line of 1 second activation (blue) and display (red) bars in both conditions.
+<img alt="ExpyVR Tutorial" src="images/timelinedefault.png" />
+To have the text component perform something different in each of the conditions, click on the combo-box in the <i>trial: async</i> tab under the label of the component and select the <i>async</i> configuration:
+<img alt="ExpyVR Tutorial" src="images/timelineotherconfiguration.png" />
+Our experiment is now ready; it has a flow with looping trials, our trial routine has two conditions, and each condition contains 1 second of text component using a different configuration. 
+<img alt="ExpyVR Tutorial" src="images/windowwithconditions.png" />
+
+<h3>General Settings</h3>
+We want this experiment to be rendered on a normal screen in full-screen. To do that we click on <i>Display Settings</i> in the top button pane:
+<img alt="ExpyVR Tutorial" src="images/toolbardisplayconfig.png" />
+In the dialog we check the <i>fullscreen</i> option.
+<img alt="ExpyVR Tutorial" src="images/displaysettings.png" />
+
+<h2>Testing</h2>
+Before creating instances of our experiment, we want to be sure everything works as expected. To do this, we have to save our experiment (extension is *.exp.xml). Do this over the <i>File > Save</i> menu or by using the corresponding shortcut. Then we click on the <i>Test Experiment</i> button:
+<img alt="ExpyVR Tutorial" src="images/toolbartestexp.png" />
+We can see the alternating texts displays as bellow. Everytime we test the experiment, the order of the experimental conditions is shuffled. When we test the experiment multiple times, we should see different sequences of <i>Synchronous</i> and <i>Asynchronous</i>.
+<img alt="ExpyVR Tutorial" src="images/syncasync.png" />
+
+<h2>Running</h2>
+Finally, we can generate an instance of our experiment. An instance is basically a file that describes the exact order of experimental conditions and the lengths of the ISIs. This is useful to be able to check after having run an experiment what exactly happened when or to run the exact same experiment multiple times. To generate an instance, you can either select <i>Experiment > Generate Instance</i> from the menu or click on the corresponding icon in the toolbar:
+<img alt="ExpyVR Tutorial" src="images/toolbargenerateinstance.png" />
+Type a file name or leave the default proposed filename in the file dialog which pops-up (extension is *.inst.xml). Clicking on the start experiment button in the toolbar (or selecting <i>Experiment > Execute Instance</i>) brings up another file dialog that lets u select the saved instance.
+<img alt="ExpyVR Tutorial" src="images/toolbarruninstance.png" />
+Once you selected the file, the experiment is executed. 
+<p>That's it. Well done!</p>
+</div>
+
+<div id="bottom">
+Last update: 11.10.2011&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Authors: Tobias Leugger, Bruno Herbelin
+</div>
+
+</div>
+
+</body>
+</html>

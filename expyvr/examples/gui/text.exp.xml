@@ -1,0 +1,90 @@
+<ExpyVR version="0.001" encoding="utf-8" type="experiment">
+  <Settings>
+    <Logger>
+      <Param name="logfreq" val="60" valType="int"/>
+      <Param name="logtype" val="console" valType="str"/>
+      <Param name="savepath" val="." valType="str"/>
+      <Param name="expname" val="expyvr exp" valType="str"/>
+    </Logger>
+    <Display>
+      <Windows>
+        <Window name="win 1">
+          <Param name="fov" val="60.0" valType="float"/>
+          <Param name="mode" val="mono" valType="str"/>
+          <Param name="size" val="(800, 600)" valType="code"/>
+        </Window>
+      </Windows>
+    </Display>
+  </Settings>
+  <Routines>
+    <Routine name="routineWelcome">
+      <Components>
+        <Component type="TextHud" importPath="hud.hudText" name="WelcomeText">
+          <Param name="name" val="WelcomeText" valType="str"/>
+          <ConditionConfigs>
+            <ConditionConfig name="LA">
+              <Param name="text" val="LA" valType="str"/>
+            </ConditionConfig>
+            <ConditionConfig name="LB">
+              <Param name="text" val="LB" valType="str"/>
+            </ConditionConfig>
+            <ConditionConfig name="RA">
+              <Param name="text" val="RA" valType="str"/>
+            </ConditionConfig>
+            <ConditionConfig name="RB">
+              <Param name="text" val="RB" valType="str"/>
+            </ConditionConfig>
+            <ConditionConfig name="standard">
+              <Param name="bold" val="False" valType="bool"/>
+              <Param name="color" val="(255, 0, 125, 255)" valType="code"/>
+              <Param name="text" val="Welcome ! I am not going to spend too much lines to tell you how to write a multiline text but a few is required." valType="str"/>
+              <Param name="withFrame" val="True" valType="bool"/>
+              <Param name="italic" val="True" valType="bool"/>
+              <Param name="font" val="arial" valType="str"/>
+              <Param name="size" val="36" valType="int"/>
+            </ConditionConfig>
+          </ConditionConfigs>
+        </Component>
+      </Components>
+      <Conditions>
+        <Condition name="LB">
+          <Param name="trials" val="l" valType="str"/>
+          <Param name="loo" val="b" valType="str"/>
+        </Condition>
+        <Condition name="RA">
+          <Param name="trials" val="r" valType="str"/>
+          <Param name="loo" val="a" valType="str"/>
+        </Condition>
+        <Condition name="RB">
+          <Param name="trials" val="r" valType="str"/>
+          <Param name="loo" val="b" valType="str"/>
+        </Condition>
+        <Condition name="LA">
+          <Param name="trials" val="l" valType="str"/>
+          <Param name="loo" val="a" valType="str"/>
+        </Condition>
+      </Conditions>
+      <RoutineFlow>
+        <Occurence type="activation" componentName="WelcomeText" startTime="0.0" duration="4.0"/>
+        <Occurence type="display" componentName="WelcomeText" startTime="0.0" duration="1.5"/>
+        <Occurence type="display" componentName="WelcomeText" startTime="2.0" duration="1.0"/>
+        <Occurence type="display" componentName="WelcomeText" startTime="3.5" duration="0.5"/>
+      </RoutineFlow>
+    </Routine>
+  </Routines>
+  <AbstractExperimentFlow>
+    <LoopInitiator type="ShuffleLoop" name="trials">
+      <Param name="nReps" val="6" valType="int"/>
+      <Param name="set" val="l, l, r, r, r, l" valType="str"/>
+      <Param name="name" val="trials" valType="str"/>
+    </LoopInitiator>
+    <LoopInitiator type="RandomLoop" name="loo">
+      <Param name="nReps" val="5" valType="int"/>
+      <Param name="set" val="a, b" valType="str"/>
+      <Param name="name" val="loo" valType="str"/>
+    </LoopInitiator>
+    <Routine routineName="routineWelcome"/>
+    <LoopTerminator name="loo"/>
+    <LoopTerminator name="trials"/>
+  </AbstractExperimentFlow>
+</ExpyVR>

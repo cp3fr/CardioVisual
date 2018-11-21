@@ -1,0 +1,22 @@
+################################################
+#
+# Cal3d cfg File
+#
+################################################
+
+scale=0.01
+
+################# Skeleton #################
+skeleton=Skeleton.XSF
+
+################# Meshes #################
+mesh=keithLOD0.XMF
+
+################# Animations #################
+animation=closeOpenHandL.XAF
+animation=closeOpenHandR.XAF
+animation=animSit.XAF
+
+################# Materials #################
+material=keithLOD0.XRF
+

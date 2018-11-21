@@ -1,0 +1,172 @@
+<ExpyVR version="0.001" encoding="utf-8" type="experiment">
+  <Settings>
+    <Logger>
+      <Param name="logfreq" val="60" valType="int"/>
+      <Param name="logtype" val="console" valType="str"/>
+      <Param name="savepath" val="." valType="str"/>
+      <Param name="expname" val="test exp" valType="str"/>
+    </Logger>
+    <Display>
+      <Windows>
+        <Window name="win1">
+          <Param name="mode" val="mono" valType="str"/>
+          <Param name="size" val="(1024, 768)" valType="code"/>
+        </Window>
+        <Window name="win2">
+          <Param name="mode" val="hmd" valType="str"/>
+          <Param name="size" val="(800, 600)" valType="code"/>
+        </Window>
+      </Windows>
+    </Display>
+  </Settings>
+  <Routines>
+    <Routine name="prstim">
+      <Components>
+        <Component type="VisuoTactile" importPath="visuotactile.visuoTactile" name="hand">
+          <Param name="name" val="hand" valType="str"/>
+          <ConditionConfigs>
+            <ConditionConfig name="standard">
+              <Param name="strokeDirection" val="1" valType="int"/>
+              <Param name="vibrationType" val="stroke" valType="str"/>
+              <Param name="delayVt" val="(0.0, 0.0)" valType="str"/>
+              <Param name="activateVisual" val="True" valType="bool"/>
+              <Param name="vibrationDuration" val="(0.2, 0.2)" valType="str"/>
+              <Param name="vtSync" val="True" valType="bool"/>
+              <Param name="activateTactile" val="True" valType="bool"/>
+            </ConditionConfig>
+            <ConditionConfig name="async">
+              <Param name="vtSync" val="False" valType="bool"/>
+            </ConditionConfig>
+            <ConditionConfig name="sync"/>
+          </ConditionConfigs>
+        </Component>
+      </Components>
+      <Conditions>
+        <Condition name="async">
+          <Param name="blocks" val="a" valType="str"/>
+        </Condition>
+        <Condition name="sync">
+          <Param name="blocks" val="s" valType="str"/>
+        </Condition>
+      </Conditions>
+      <RoutineFlow>
+        <Occurence type="activation" componentName="hand" startTime="0.0" duration="5.0"/>
+        <Occurence type="display" componentName="hand" startTime="0.0" duration="5.0"/>
+      </RoutineFlow>
+    </Routine>
+    <Routine name="vtasynch">
+      <Components>
+        <Component type="VisuoTactile" importPath="visuotactile.visuoTactile" name="hand-left">
+          <Param name="name" val="hand-left" valType="str"/>
+          <ConditionConfigs>
+            <ConditionConfig name="standard">
+              <Param name="strokeDirection" val="1" valType="int"/>
+              <Param name="vibrationType" val="stroke" valType="str"/>
+              <Param name="delayVt" val="(0.0, 0.0)" valType="str"/>
+              <Param name="activateVisual" val="True" valType="bool"/>
+              <Param name="vibrationDuration" val="(0.2, 0.2)" valType="str"/>
+              <Param name="vtSync" val="True" valType="bool"/>
+              <Param name="activateTactile" val="True" valType="bool"/>
+            </ConditionConfig>
+            <ConditionConfig name="async-left">
+              <Param name="vtSync" val="False" valType="bool"/>
+            </ConditionConfig>
+            <ConditionConfig name="sync-right">
+              <Param name="activateVisual" val="False" valType="bool"/>
+              <Param name="activateTactile" val="False" valType="bool"/>
+            </ConditionConfig>
+            <ConditionConfig name="sync-left"/>
+            <ConditionConfig name="async-right">
+              <Param name="activateVisual" val="False" valType="bool"/>
+              <Param name="activateTactile" val="False" valType="bool"/>
+            </ConditionConfig>
+          </ConditionConfigs>
+        </Component>
+        <Component type="VisuoTactile" importPath="visuotactile.visuoTactile" name="hand-right">
+          <Param name="name" val="hand-right" valType="str"/>
+          <ConditionConfigs>
+            <ConditionConfig name="standard">
+              <Param name="strokeDirection" val="1" valType="int"/>
+              <Param name="vibrationType" val="stroke" valType="str"/>
+              <Param name="delayVt" val="(0.0, 0.0)" valType="str"/>
+              <Param name="activateVisual" val="True" valType="bool"/>
+              <Param name="vibrationDuration" val="(0.2, 0.2)" valType="str"/>
+              <Param name="vtSync" val="True" valType="bool"/>
+              <Param name="activateTactile" val="True" valType="bool"/>
+            </ConditionConfig>
+            <ConditionConfig name="async-left">
+              <Param name="activateVisual" val="False" valType="bool"/>
+              <Param name="activateTactile" val="False" valType="bool"/>
+            </ConditionConfig>
+            <ConditionConfig name="sync-right"/>
+            <ConditionConfig name="sync-left">
+              <Param name="activateVisual" val="False" valType="bool"/>
+              <Param name="activateTactile" val="False" valType="bool"/>
+            </ConditionConfig>
+            <ConditionConfig name="async-right">
+              <Param name="vtSync" val="False" valType="bool"/>
+            </ConditionConfig>
+          </ConditionConfigs>
+        </Component>
+      </Components>
+      <Conditions>
+        <Condition name="sync-left">
+          <Param name="mimgs" val="l" valType="str"/>
+          <Param name="blocks" val="s" valType="str"/>
+        </Condition>
+        <Condition name="sync-right">
+          <Param name="mimgs" val="r" valType="str"/>
+          <Param name="blocks" val="s" valType="str"/>
+        </Condition>
+        <Condition name="async-left">
+          <Param name="mimgs" val="l" valType="str"/>
+          <Param name="blocks" val="a" valType="str"/>
+        </Condition>
+        <Condition name="async-right">
+          <Param name="mimgs" val="r" valType="str"/>
+          <Param name="blocks" val="a" valType="str"/>
+        </Condition>
+      </Conditions>
+      <RoutineFlow>
+        <Occurence type="activation" componentName="hand-left" startTime="0.0" duration="10.0"/>
+        <Occurence type="display" componentName="hand-left" startTime="0.0" duration="10.0"/>
+        <Occurence type="activation" componentName="hand-right" startTime="10.0" duration="10.0"/>
+        <Occurence type="display" componentName="hand-right" startTime="10.0" duration="10.0"/>
+        <Occurence type="activation" componentName="hand-right" startTime="20.0" duration="10.0"/>
+        <Occurence type="display" componentName="hand-right" startTime="20.0" duration="10.0"/>
+      </RoutineFlow>
+    </Routine>
+  </Routines>
+  <AbstractExperimentFlow>
+    <Isi name="beginwait">
+      <Param name="durationMax" val="3.0" valType="float"/>
+      <Param name="name" val="beginwait" valType="str"/>
+      <Param name="durationMin" val="3.0" valType="float"/>
+    </Isi>
+    <LoopInitiator type="ShuffleLoop" name="blocks">
+      <Param name="nReps" val="2" valType="int"/>
+      <Param name="set" val="s, a" valType="str"/>
+      <Param name="name" val="blocks" valType="str"/>
+    </LoopInitiator>
+    <Routine routineName="prstim"/>
+    <LoopInitiator type="ShuffleLoop" name="mimgs">
+      <Param name="nReps" val="4" valType="int"/>
+      <Param name="set" val="l, r" valType="str"/>
+      <Param name="name" val="mimgs" valType="str"/>
+    </LoopInitiator>
+    <Routine routineName="vtasynch"/>
+    <Isi name="mimg-isi">
+      <Param name="durationMax" val="0.5" valType="float"/>
+      <Param name="name" val="mimg-isi" valType="str"/>
+      <Param name="durationMin" val="0.1" valType="float"/>
+    </Isi>
+    <LoopTerminator name="mimgs"/>
+    <Isi name="block-isi">
+      <Param name="durationMax" val="1.0" valType="float"/>
+      <Param name="name" val="block-isi" valType="str"/>
+      <Param name="durationMin" val="1.0" valType="float"/>
+    </Isi>
+    <LoopTerminator name="blocks"/>
+  </AbstractExperimentFlow>
+</ExpyVR>
+

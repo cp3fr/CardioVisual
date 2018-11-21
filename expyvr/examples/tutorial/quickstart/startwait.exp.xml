@@ -1,0 +1,107 @@
+<ExpyVR version="0.002" encoding="utf-8" type="experiment">
+  <Settings>
+    <Logger>
+      <Param name="logfreq" val="60" valType="int"/>
+      <Param name="logtype" val="console" valType="str"/>
+      <Param name="savepath" val="$EXPYVRROOT$/log" valType="str"/>
+      <Param name="expname" val="expyvr exp" valType="str"/>
+    </Logger>
+    <Display>
+      <Windows>
+        <Window name="win 1">
+          <Param name="fullscreen" val="False" valType="bool"/>
+          <Param name="fov" val="60.0" valType="float"/>
+          <Param name="flipScreen" val="False" valType="bool"/>
+          <Param name="color" val="(0.0, 0.0, 0.0)" valType="code"/>
+          <Param name="mode" val="mono" valType="str"/>
+          <Param name="size" val="(800, 600)" valType="code"/>
+        </Window>
+      </Windows>
+    </Display>
+  </Settings>
+  <Components>
+    <Component type="HudText" importPath="hud.hudText" name="welcome" enabled="True">
+      <InitConfig>
+        <Param name="name" val="welcome" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="pause_on_start" val="True" valType="bool"/>
+          <Param name="color" val="(255, 0, 0, 255)" valType="code"/>
+          <Param name="text" val="PRESS [SPACE] or [ENTER] TO SOLVE NEUROSCIENCE" valType="str"/>
+          <Param name="withFrame" val="True" valType="bool"/>
+          <Param name="posX" val="50.0" valType="float"/>
+          <Param name="bold" val="False" valType="bool"/>
+          <Param name="italic" val="False" valType="bool"/>
+          <Param name="posY" val="50.0" valType="float"/>
+          <Param name="font" val="arial" valType="str"/>
+          <Param name="size" val="26" valType="int"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="Keyboard" importPath="input.inputKeyboard" name="keyboard" enabled="True">
+      <InitConfig>
+        <Param name="logToCSV" val="False" valType="bool"/>
+        <Param name="name" val="keyboard" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="keys" val="SPACE" valType="str"/>
+          <Param name="unpause" val="True" valType="bool"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="HudImage" importPath="hud.hudImage" name="scienceImg" enabled="True">
+      <InitConfig>
+        <Param name="name" val="scienceImg" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="pause_on_start" val="False" valType="bool"/>
+          <Param name="scale" val="100.0" valType="float"/>
+          <Param name="angle" val="0.0" valType="float"/>
+          <Param name="filename" val="$EXPDIR$/science.jpg" valType="str"/>
+          <Param name="posX" val="50.0" valType="float"/>
+          <Param name="posY" val="50.0" valType="float"/>
+          <Param name="alpha" val="1.0" valType="float"/>
+        </Config>
+      </Configs>
+    </Component>
+  </Components>
+  <Routines>
+    <Routine name="start">
+      <Conditions>
+        <Condition name="cond 1">
+          <LoopVariables/>
+          <UsedComponents>
+            <UsedComponent componentName="welcome" configName="standard" isGrouped="False"/>
+            <UsedComponent componentName="keyboard" configName="standard" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="welcome" startTime="0.0" duration="0.1"/>
+            <Occurence type="display" componentName="welcome" startTime="0.0" duration="0.1"/>
+            <Occurence type="activation" componentName="keyboard" startTime="0.0" duration="0.1"/>
+          </RoutineFlow>
+        </Condition>
+      </Conditions>
+    </Routine>
+    <Routine name="image">
+      <Conditions>
+        <Condition name="cond 1">
+          <LoopVariables/>
+          <UsedComponents>
+            <UsedComponent componentName="scienceImg" configName="standard" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="scienceImg" startTime="0.0" duration="10.0"/>
+            <Occurence type="display" componentName="scienceImg" startTime="0.0" duration="10.0"/>
+          </RoutineFlow>
+        </Condition>
+      </Conditions>
+    </Routine>
+  </Routines>
+  <AbstractExperimentFlow>
+    <Routine routineName="start"/>
+    <Routine routineName="image"/>
+  </AbstractExperimentFlow>
+</ExpyVR>

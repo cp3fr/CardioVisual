@@ -1,0 +1,257 @@
+<ExpyVR version="0.002" encoding="utf-8" type="experiment">
+  <Settings>
+    <Logger>
+      <Param name="logfreq" val="60" valType="int"/>
+      <Param name="logtype" val="console" valType="str"/>
+      <Param name="savepath" val="$EXPYVRROOT$/log" valType="str"/>
+      <Param name="expname" val="expyvr exp" valType="str"/>
+    </Logger>
+    <Display>
+      <Windows>
+        <Window name="win 1">
+          <Param name="fullscreen" val="False" valType="bool"/>
+          <Param name="fov" val="60.0" valType="float"/>
+          <Param name="mode" val="mono" valType="str"/>
+          <Param name="size" val="(800, 600)" valType="code"/>
+        </Window>
+      </Windows>
+    </Display>
+  </Settings>
+  <Components>
+    <Component type="HudText" importPath="hud.hudText" name="welcome">
+      <InitConfig>
+        <Param name="name" val="welcome" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="pause_on_start" val="True" valType="bool"/>
+          <Param name="color" val="(255, 255, 255, 255)" valType="code"/>
+          <Param name="text" val="Welcome. Press [Enter] or [Space] to begin experiment." valType="str"/>
+          <Param name="withFrame" val="True" valType="bool"/>
+          <Param name="posX" val="25.0" valType="float"/>
+          <Param name="bold" val="False" valType="bool"/>
+          <Param name="italic" val="False" valType="bool"/>
+          <Param name="posY" val="25.0" valType="float"/>
+          <Param name="font" val="arial" valType="str"/>
+          <Param name="size" val="26" valType="int"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="Keyboard" importPath="input.inputKeyboard" name="unpause">
+      <InitConfig>
+        <Param name="logToCSV" val="False" valType="bool"/>
+        <Param name="name" val="unpause" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="keys" val="ENTER SPACE" valType="str"/>
+          <Param name="unpause" val="True" valType="bool"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="OpenglViewer" importPath="scene.openglViewer" name="opengl">
+      <InitConfig>
+        <Param name="GLSLfragment" val="" valType="str"/>
+        <Param name="GLSLvertex" val="" valType="str"/>
+        <Param name="name" val="opengl" valType="str"/>
+        <Param name="initCode" val="self.r=0;self.mesh = OBJ(&quot;..\scene\icosahedron.obj&quot;)" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="LEFT-GREEN">
+          <Param name="updateCode" val="self.r=self.r - 10*dt" valType="str"/>
+          <Param name="preRenderCode" val="glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); glColor3f(0,1,0)" valType="str"/>
+        </Config>
+        <Config name="LEFT-RED">
+          <Param name="updateCode" val="self.r=self.r - 10*dt" valType="str"/>
+        </Config>
+        <Config name="RIGHT-GREEN">
+          <Param name="preRenderCode" val="glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); glColor3f(0,1,0)" valType="str"/>
+        </Config>
+        <Config name="standard">
+          <Param name="scale" val="1.0" valType="float"/>
+          <Param name="renderCode" val="glRotatef(self.r,0,1,0);glCallList(self.mesh.gl_list)" valType="str"/>
+          <Param name="updateCode" val="self.r=self.r+10*dt" valType="str"/>
+          <Param name="preRenderCode" val="glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); glColor3f(1,0,0)" valType="str"/>
+          <Param name="y" val="0.0" valType="float"/>
+          <Param name="x" val="0.0" valType="float"/>
+          <Param name="z" val="-5.0" valType="float"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="HudText" importPath="hud.hudText" name="question">
+      <InitConfig>
+        <Param name="name" val="question" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="pause_on_start" val="True" valType="bool"/>
+          <Param name="color" val="(0, 255, 0, 255)" valType="code"/>
+          <Param name="text" val="Which direction did the object spin?&#10;[L] for Left&#10;[R] for Right" valType="str"/>
+          <Param name="withFrame" val="True" valType="bool"/>
+          <Param name="posX" val="50.0" valType="float"/>
+          <Param name="bold" val="True" valType="bool"/>
+          <Param name="italic" val="False" valType="bool"/>
+          <Param name="posY" val="50.0" valType="float"/>
+          <Param name="font" val="arial" valType="str"/>
+          <Param name="size" val="26" valType="int"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="Keyboard" importPath="input.inputKeyboard" name="answers">
+      <InitConfig>
+        <Param name="logToCSV" val="True" valType="bool"/>
+        <Param name="name" val="answers" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="keys" val="L R" valType="str"/>
+          <Param name="unpause" val="True" valType="bool"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="HudText" importPath="hud.hudText" name="thanks">
+      <InitConfig>
+        <Param name="name" val="thanks" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="pause_on_start" val="True" valType="bool"/>
+          <Param name="color" val="(255, 0, 0, 255)" valType="code"/>
+          <Param name="text" val="Thanks for your participation!" valType="str"/>
+          <Param name="withFrame" val="True" valType="bool"/>
+          <Param name="posX" val="50.0" valType="float"/>
+          <Param name="bold" val="False" valType="bool"/>
+          <Param name="italic" val="False" valType="bool"/>
+          <Param name="posY" val="50.0" valType="float"/>
+          <Param name="font" val="arial" valType="str"/>
+          <Param name="size" val="26" valType="int"/>
+        </Config>
+      </Configs>
+    </Component>
+  </Components>
+  <Routines>
+    <Routine name="start">
+      <Conditions>
+        <Condition name="cond 1">
+          <LoopVariables/>
+          <UsedComponents>
+            <UsedComponent componentName="welcome" configName="standard" isGrouped="False"/>
+            <UsedComponent componentName="unpause" configName="standard" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="welcome" startTime="0.0" duration="0.1"/>
+            <Occurence type="display" componentName="welcome" startTime="0.0" duration="0.1"/>
+            <Occurence type="activation" componentName="unpause" startTime="0.0" duration="0.1"/>
+          </RoutineFlow>
+        </Condition>
+      </Conditions>
+    </Routine>
+    <Routine name="display">
+      <Conditions>
+        <Condition name="LEFT-RED">
+          <LoopVariables>
+            <Param name="color" val="R" valType="str"/>
+            <Param name="direction" val="L" valType="str"/>
+          </LoopVariables>
+          <UsedComponents>
+            <UsedComponent componentName="opengl" configName="LEFT-RED" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="opengl" startTime="0.0" duration="2.0"/>
+            <Occurence type="display" componentName="opengl" startTime="0.0" duration="2.0"/>
+          </RoutineFlow>
+        </Condition>
+        <Condition name="LEFT-GREEN">
+          <LoopVariables>
+            <Param name="color" val="G" valType="str"/>
+            <Param name="direction" val="L" valType="str"/>
+          </LoopVariables>
+          <UsedComponents>
+            <UsedComponent componentName="opengl" configName="LEFT-GREEN" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="opengl" startTime="0.0" duration="2.0"/>
+            <Occurence type="display" componentName="opengl" startTime="0.0" duration="2.0"/>
+          </RoutineFlow>
+        </Condition>
+        <Condition name="RIGHT-RED">
+          <LoopVariables>
+            <Param name="color" val="R" valType="str"/>
+            <Param name="direction" val="R" valType="str"/>
+          </LoopVariables>
+          <UsedComponents>
+            <UsedComponent componentName="opengl" configName="standard" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="opengl" startTime="0.0" duration="2.0"/>
+            <Occurence type="display" componentName="opengl" startTime="0.0" duration="2.0"/>
+          </RoutineFlow>
+        </Condition>
+        <Condition name="RIGHT-GREEN">
+          <LoopVariables>
+            <Param name="color" val="G" valType="str"/>
+            <Param name="direction" val="R" valType="str"/>
+          </LoopVariables>
+          <UsedComponents>
+            <UsedComponent componentName="opengl" configName="RIGHT-GREEN" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="opengl" startTime="0.0" duration="2.0"/>
+            <Occurence type="display" componentName="opengl" startTime="0.0" duration="2.0"/>
+          </RoutineFlow>
+        </Condition>
+      </Conditions>
+    </Routine>
+    <Routine name="response">
+      <Conditions>
+        <Condition name="cond 1">
+          <LoopVariables>
+            <Param name="color" val="-all-" valType="str"/>
+            <Param name="direction" val="-all-" valType="str"/>
+          </LoopVariables>
+          <UsedComponents>
+            <UsedComponent componentName="question" configName="standard" isGrouped="False"/>
+            <UsedComponent componentName="answers" configName="standard" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="question" startTime="0.0" duration="0.1"/>
+            <Occurence type="display" componentName="question" startTime="0.0" duration="0.1"/>
+            <Occurence type="activation" componentName="answers" startTime="0.0" duration="0.1"/>
+          </RoutineFlow>
+        </Condition>
+      </Conditions>
+    </Routine>
+    <Routine name="done">
+      <Conditions>
+        <Condition name="cond 1">
+          <LoopVariables/>
+          <UsedComponents>
+            <UsedComponent componentName="thanks" configName="standard" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="thanks" startTime="0.0" duration="1.0"/>
+            <Occurence type="display" componentName="thanks" startTime="0.0" duration="1.0"/>
+          </RoutineFlow>
+        </Condition>
+      </Conditions>
+    </Routine>
+  </Routines>
+  <AbstractExperimentFlow>
+    <Routine routineName="start"/>
+    <LoopInitiator type="ShuffleLoop" name="direction">
+      <Param name="nReps" val="2" valType="int"/>
+      <Param name="set" val="L, R" valType="str"/>
+      <Param name="name" val="direction" valType="str"/>
+    </LoopInitiator>
+    <LoopInitiator type="ShuffleLoop" name="color">
+      <Param name="nReps" val="2" valType="int"/>
+      <Param name="set" val="R, G" valType="str"/>
+      <Param name="name" val="color" valType="str"/>
+    </LoopInitiator>
+    <Routine routineName="display"/>
+    <Routine routineName="response"/>
+    <LoopTerminator name="color"/>
+    <LoopTerminator name="direction"/>
+    <Routine routineName="done"/>
+  </AbstractExperimentFlow>
+</ExpyVR>

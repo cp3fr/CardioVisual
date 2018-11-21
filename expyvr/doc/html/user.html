@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>ExpyVR User's Guide</title>
+  </head>
+  <body>
+    <div id="container"> <iframe class="headerIframe" src="header.html"></iframe>
+      <div id="center">
+        <h1>Experiment Designer User's Guide</h1>
+        <h2 id="contents">Contents</h2>
+        <ul>
+          <li> <a href="#overview">Overview</a>
+            <ul>
+              <li><a href="#units">Units and Precision</a></li>
+              <li><a href="#vocabulary">Vocabulary</a></li>
+            </ul>
+          </li>
+          <li> <a href="#designing">Designing</a>
+            <ul>
+              <li><a href="#flow">Flow</a></li>
+              <li><a href="#routines">Routines</a></li>
+              <li><a href="#settings">Settings</a></li>
+            </ul>
+          </li>
+          <li> <a href="#running">Running</a>
+            <ul>
+              <li><a href="#testing">Testing</a></li>
+              <li><a href="#experimentFiles">Experiment Files</a></li>
+              <li><a href="#instanceFiles">Instance Files</a></li>
+              <li><a href="#starting">Starting</a></li>
+            </ul>
+          </li>
+        </ul>
+        <h2 id="overview">Overview</h2>
+        <p><i>ExpyVR Exerpiment Designer</i> is part of the <i>ExpyVR</i>
+          framework developed by the Laboratory of Cognitive
+          Neuroscience at EPFL. ExpyVR is made for designing and running
+          computerised experiments, most notably experiments in
+          virtual-reality. It is based on the open-source project <a
+            href="http://www.psychopy.org/">PsychoPy</a>.</p>
+        <p>The <i>Experiment Designer</i> is the core user interface of
+          the framework. It allows to define the general flow of the
+          experiment and the detailed timing of all its components.
+          Randomised experimental conditions can be set and the
+          components can be configured to behave differently depending
+          on the condition. Once an experiment is created, it can
+          directly be started from the designer, or executed
+          independently (e.g. using <i>runexperiment.bat</i>)</p>
+        <p>The ExpyVR framework is still in development. This guide
+          might therefore not always be up-to-date.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="units">Units and Precision</h3>
+        Units used are always SI units. All times are therefore in
+        seconds but the precision is in milliseconds.
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="vocabulary">Vocabulary</h3>
+        <ul>
+          <li><b>Component:</b> A component encapsulates the code for
+            displaying something (e.g. a picture) and/or performing some
+            operations (e.g. reading a sensor). </li>
+          <li><b>Routine:</b> A routine defines the precise execution
+            timelines of multiple components for one or more
+            experimental conditions.</li>
+          <li><b>ISI:</b> An Inter-Stimulus-Interval represents a pause
+            in between routines. It can have a variable duration.</li>
+          <li><b>Flow:</b> The flow of an experiment defines the
+            sequence and loops of routines and ISI (not their timing).</li>
+          <li><b>Experiment</b>: An experiment is made of a flow
+            (populated with routines and ISI) and of various components.
+            It is stored in an experiment file with the suffix
+            *.exp.xml.</li>
+          <li><b>Experiment instance:</b> An experiment instance is
+            needed for executing an experiment. It defines the exact
+            sequence of routines and ISIs, with all the randomisation
+            from the loops decided. Eventually, running an experiment
+            with multiple subjects will require several instances, one
+            for each combination of conditions.</li>
+        </ul>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="designing">Designing</h2>
+        The Experiment Designer is divided into two main areas: the
+        smaller flow area on top and the routine area that fills up most
+        of the screen.The latter is itself divided into three areas; the
+        routine timeline in the center and the components creation and
+        selection on the sides<br>
+        <img style=" width: 800px; height: 600px;" alt="window of
+          ExpyVR" src="images/window.png"><br>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="flow">Flow</h3>
+        The flow area shows the big picture of the experiment; the
+        different parts (routines, ISIs, loops), their order and
+        possibly loops in the flow. On the left side there are three
+        buttons to add the different elements to the flow:
+        <ul>
+          <li><b>Add Routine:</b> Enter the name of the new routine and
+            set its position in the flow.</li>
+          <li><b>Add Loop:</b> Enter the name of the new loop, the start
+            and the end position in the flow and the number of times
+            this loop should be followed. Loops can have a random
+            variable associated. Each time the loop is followed a value
+            is associated to the variable. Based on these values, the
+            experimental conditions of the routines inside that loop are
+            generated. The value of the variable is selected from a set
+            that can be specified as comma-separated values. It depends
+            on the type of loop how exactly the available values are
+            specified and later selected. The four types of loops are:
+            <ul>
+              <li><i>Fix:</i> There is no loop variable. Simply repeat
+                the elements inside this loop for a certain number of
+                times.</li>
+              <li><i>Random:</i> Randomly select an element from the
+                set. This is selection with replacement and will create
+                unbalanced selections.</li>
+              <li><i>Shuffle:</i> Create a random permutation of the
+                set. This is selection without replacement and will
+                create balanced selections. If the number of values
+                given is smaller than the number of repetitions, the set
+                is repeated until it has enough elements and then only
+                shuffled. If the number of repetitions is not divisible
+                by the number of elements in the set, the selection will
+                not be balanced.</li>
+              <li><i>Factorial:</i> Has two sets. All possible
+                combinations of the sets are automatically generated.
+                The resulting set of values is then randomly permuted.
+                The loop is repeated exactly once for every possible
+                value. The same thing can be achieved with a shuffle
+                loop, but the factorial loop makes it easier to create
+                experiments with a factorial design.</li>
+            </ul>
+          </li>
+          <li><b>Add ISI:</b> Enter the name of the new ISI, its
+            position in the flow and the minimum and maximum duration in
+            between which the actual duration will be selected uniform
+            randomly from.</li>
+        </ul>
+        <p>Each routine created can contain several <b>experimental
+            conditions</b>. Every routine automatically generates all
+          the conditions that are possible given the loop variables from
+          the surrounding loops. As an example, we take a routine that
+          inside two random loops. One of the loops has the set <i>sync,
+
+            async</i> and the other <i>left, middle, right</i>. Our
+          routine will have a total of six conditions: <i>sync-left,
+            sync-middle, sync-right, async-left, async-middle,
+            async-right</i>. <b>Careful:</b> When you change the names
+          or amount of loop variables or the position of a routine, the
+          conditions change automatically. Make sure that your condition
+          timelines still look OK if you make such a change.</p>
+        <p>To change, move or remove an existing component in the flow
+          simply left click (or right click, same effect) on it and
+          select the appropriate action from the context menu. The
+          context menu is placed in a way that you can double click on a
+          component to select the first action in the list.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3>Components</h3>
+        <p>Each component that can be created corresponds to a module in
+          the ExpyVR framework. For more detailed information on components
+          and their parameters, see the <a href="modules.html">Module Documentation</a>
+          section. New modules can be easily added by programming in Python. More 
+          details can be found in the <a href="programmer.html">Programmer's Guide</a>.</p>
+        <p>Following is a quick description of the main components:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td><img alt="HUD Text component"
+                  src="../../src/expbuilder/app/components/resources/hudtext.png"></td>
+              <td><b>HUD Text</b>: Display a text in the 2D foreground
+                of the window.</td>
+            </tr>
+            <tr>
+              <td><img alt="Fixation Cross component"
+                  src="../../src/expbuilder/app/components/resources/hudcross.png"></td>
+              <td><b>Fixation Cross</b> : Displays a cross in the 2D
+                foreground of the window.</td>
+            </tr>
+            <tr>
+              <td><img alt="HUD Image component"
+                  src="../../src/expbuilder/app/components/resources/hudimage.png"></td>
+              <td><b>HUD Image</b>: Display an image in the 2D
+                foreground of the window.</td>
+            </tr>
+            <tr>
+              <td><img alt="Image component"
+                  src="../../src/expbuilder/app/components/resources/billboardimage.png"></td>
+              <td><b>Image</b> : Displays an image (*.png, *.jpg, etc.)
+                on a billboard in the 3D scene.</td>
+            </tr>
+            <tr>
+              <td><img alt="Video component"
+                  src="../../src/expbuilder/app/components/resources/billboardvideo.png"></td>
+              <td><b>Video</b>: Displays a video (*.avi, *.mov, etc) on
+                a billboard in the 3D scene.</td>
+            </tr>
+            <tr>
+              <td><img alt="Webcam component"
+                  src="../../src/expbuilder/app/components/resources/billboardcamera.png"></td>
+              <td><b>Webcam</b>: Displays the image of a webcam on a
+                billboard in the 3D scene.</td>
+            </tr>
+            <tr>
+              <td><img alt="Sound component"
+                  src="../../src/expbuilder/app/components/resources/audiofile.png"></td>
+              <td><b>Sound</b>: Plays an audio file (*.wav, *.mp3, etc.)</td>
+            </tr>
+            <tr>
+              <td><img alt="Keyboard component"
+                  src="../../src/expbuilder/app/components/resources/keyboard.png"></td>
+              <td><b>Keyboard</b>: Listen to keyboard events, log their
+                timing, and possibly unpause the script.</td>
+            </tr>
+            <tr>
+              <td><img alt="Joystick component"
+                  src="../../src/expbuilder/app/components/resources/joystick.png"></td>
+              <td><b>Joystick</b>: Listen to joystick events, log their
+                timing, and possibly unpause the script.</td>
+            </tr>
+            <tr>
+              <td><img style=" width: 54px; height: 54px;" alt="Python
+                  Code component"
+                  src="../../src/expbuilder/app/components/resources/pythonscript.png"></td>
+              <td><b>Script</b>: Generic placeholder for Python code.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>On the right of the window there is a panel for all the
+          components that can be created. On the left there is a panel
+          of the instances of components which have been created. Each
+          component that you create has to be given a unique name. Some
+          components have other parameters used for their initialization
+          (e.g. the id of the camera for a webcam module).</p>
+        <p>Different <b>configurations</b> can be created for a
+          component, offering the possibility to change its behavior
+          when inserted into a routine:</p>
+        <ul>
+          <li>There is always a configuration entitled <i>standard</i>
+            which defines the normal behaviour of this component.</li>
+          <li>The other configurations are based on the standard
+            configuration, except the parameters where the flag <i>'as
+              in standard'</i> is unchecked and for which another
+            user-defined value is used.</li>
+        </ul>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="routines">Routines</h3>
+        <p>The routine area, in the center of the window, has a tab bar
+          on top which allows to define what is executed for each
+          experimental condition. A component is inserted to the current
+          condition of a routine by selecting <i>add to condition</i>
+          or <i>add to all conditions</i> from the context menu when
+          clicking on the component (left panel).</p>
+        <p>The parameters to define the timing of a component when
+          inserted in the timeline of a routine are:</p>
+        <ul>
+          <li><b>Display times:</b> Every component that can be
+            displayed in the virtual scene has a set of display times.
+            For every time you want the this component to be shown
+            during the experiment you have to specify the start time and
+            the duration of the display. Display times are represented
+            in red in the timeline.</li>
+          <li><b>Activation times:</b> All components can be activated
+            for certain time periods. What activation means exactly
+            depends on the type of component and on the parameters you
+            set. Activation times are represented in blue in the
+            timeline.</li>
+        </ul>
+        <p>Inside the main area you can see a timeline for each
+          component of the condition of a routine: the red bar shows
+          when a component is displayed and the blue bar when it is
+          active. Timing properties of a component can be edited by
+          clicking on the timeline and selcting <i>edit</i>. To remove
+          an instance or move it up and down in the display order,
+          select the appropriate action from the context menu.</p>
+        <p>For instance, the fixation cross module is displayable (draws
+          a cross), but its activation is pretty useless as nothing
+          changes (it is safe to put a zero duration activation time).
+          To the contrary, the Audio module is not displayable, but the
+          activation times are important as they define when to play the
+          sound. Many active components need both display and activation
+          times; the movie module will play the file during the
+          activation times, but show it only during the display times.</p>
+        <p>A component inside a routine will be executed according to
+          the <b>configuration</b> selected for this timeline in the
+          combo-box under its name. Configurations can be created and
+          edited in the component properties dialog. This dialog is
+          opened at the creation time of the component, or by a clicking
+          on its icon in the <i>Experiment Components</i> panel and
+          selecting <i>edit</i>.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="settings">General settings</h3>
+        In the tool bar of <i>Experiment Designer </i>are two buttons
+        for general settings. These settings are used for the whole
+        experiment and are defining how to log the events during the
+        execution and how to setup the display window.
+        <h4><img style=" width: 32px; height: 32px;" class="inline"
+            alt="Logger settings icon"
+            src="../../src/expbuilder/app/resources/settingsExp32.png"
+            align="middle"> Logger</h4>
+        During the execution of an experiment all of the modules
+        generate a lot of logging data to keep track of when they are
+        turned on and off and what they are doing exactly. In the logger
+        settings, you can set whether the logging should be done to
+        standard output console and/or to a file.<br>
+        It is also a good idea to configure where you want the logs to
+        be saved by setting the 'savepath'.<br>
+        <h4><img style=" width: 32px; height: 32px;" class="inline"
+            alt="Logger settings icon"
+            src="../../src/expbuilder/app/resources/monitors32.png"
+            align="middle"> Display</h4>
+        In the display settings you can define how and on which window
+        the experiment should be displayed. You can add multiple windows
+        that are rendered into different screens. The following
+        parameters also set here:<br>
+        <ul>
+          <li><span style="font-weight: bold;">pos (X, Y, Z) </span>:
+            position of the camera in 3D world<br>
+          </li>
+          <li><span style="font-weight: bold;">angle (X, Y, Z)</span> :
+            rotation of the camera as Euler angles (zeros means looking
+            forward in Z)<br>
+          </li>
+          <li><span style="font-weight: bold;">mode </span>: rendering
+            mode for monoscopic or stereoscopic screen (various stereo
+            settings available)<br>
+          </li>
+          <li><span style="font-weight: bold;">size </span>: dimensions
+            of the window in pixels (when not fullscreen)<br>
+          </li>
+          <li><span style="font-weight: bold;">fov </span>: horizontal
+            field of view of the camera (in degrees)<br>
+          </li>
+          <li><span style="font-weight: bold;">fullscreen </span>:
+            display in fullscreen mode (window dimension becomes the
+            size of the screen)<br>
+          </li>
+          <li><span style="font-weight: bold;">screenid </span>:
+            identifier of the screen where to show the fullscreen (from
+            Windows display settings)<br>
+          </li>
+          <li><span style="font-weight: bold;">flipscreen </span>: flip
+            the display vertically<br>
+          </li>
+          <li><span style="font-weight: bold;">color </span>: color of
+            the background (RGB values in [0.0, 1.0]<br>
+          </li>
+        </ul>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="running">Running</h2>
+        During the development of the experiment you can easily test
+        your experiment without generating an instance. The experiment
+        always has to be saved though before running a test or
+        generating an instance. After finishing the design of an
+        experiment, you can create instances for your subjects.
+        <p class="toContents"><a href="#contents">Back to contents</a> </p>
+        <h4><img style=" width: 32px; height: 32px;" class="inline"
+            alt="Logger settings icon"
+            src="../../src/expbuilder/app/resources/filesave32.png"
+            align="middle"> Experiment files; *.exp.xml</h4>
+        <p>Experiment files contain a description and the parameters of
+          all the routines, the components, and experimental conditions.
+          They can be saved and loaded in ExpyVR <i>Experiment Designer</i>
+          program.</p>
+        <p>You should save your experiment file every time you change
+          something in the configuration of your experiment.</p>
+        <p class="toContents"><a href="user.html#contents">Back to
+            contents</a></p>
+        <h4><img style=" width: 32px; height: 32px;" class="inline"
+            alt="Logger settings icon"
+            src="../../src/expbuilder/app/resources/test32.png"
+            align="middle">Testing</h4>
+        You can use the <i>Test Experiment</i> button or press
+        [CTRL]+[T] to test the experiment. You have to save the
+        exerpiment before doing so. The randomisation of the loop
+        variables and ISI lengths is performed for every separate test
+        run of the experiment.<br>
+        <br>
+        NB: When testing, the main window is frozen until you close the
+        experiment window(s).<br>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h4><img style=" width: 32px; height: 32px;" class="inline"
+            alt="Logger settings icon"
+            src="../../src/expbuilder/app/resources/gen32.png"
+            align="middle"> Instance files; *.inst.xml</h4>
+        <p>Instance files contain the parameters selected by the
+          computer according to the randomisations requested by the user
+          in an experiment (e.g. randomization of loop conditions).</p>
+        <p>Instances can be generated by selecting <i>Generate Instance</i>
+          from the <i>Experiment</i> menu or pressing the orange button
+          in the toolbar. When generating an instance file, <i>Experiment
+
+            Designer</i> goes through all the loops and does the
+          randomisation to find the sequence of experimental conditions.
+          Also all the durations of all the ISIs are randomly selected
+          within the given bounds. This is stored to a file that can be
+          loaded later to start the experiment. All the information
+          present in the instance file is the sequence of routines and
+          ISIs, the experimental conditions of the routines and the
+          duration of the ISIs.</p>
+        <p>You should (re)generate an instance every time you change the
+          flow. All the other parameters such as the timeline of the
+          routines being stored in the experiment file, you do not have
+          to regenerate the instances if you only change the settings of
+          a component or its timing. In doubt, it is safe to re-generate
+          and instance each time you save the experiment.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h4><img style=" width: 32px; height: 32px;" class="inline"
+            alt="Logger settings icon"
+            src="../../src/expbuilder/app/resources/run32.png"
+            align="middle"> Starting</h4>
+        <p>Instances can be executed by selecting<i> Execute Instance</i>
+          from the <i>Experiment</i> menu or by pressing the green
+          button in the toolbar. Once you selected an instance file, the
+          experiment is immediately started. To quickly restart the last
+          executed instance, select <i>'Re-execute last instance'</i>
+          in the menu, or just press [CTRL]+[R].</p>
+        <p>Instances can also be executed without ExpyVR Experiment
+          Designer interface ; you can use the <i>'runexperiment.bat</i>'
+          batch file instead.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+      </div>
+      <div id="bottom"> Last update:
+        11.10.2011&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Authors: Tobias
+        Leugger, Bruno Herbelin</div>
+    </div>
+  </body>
+</html>

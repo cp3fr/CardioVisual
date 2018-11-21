@@ -1,0 +1,58 @@
+<ExpyVR version="0.002" encoding="utf-8" type="experiment">
+  <Settings>
+    <Logger>
+      <Param name="logfreq" val="60" valType="int"/>
+      <Param name="logtype" val="console" valType="str"/>
+      <Param name="savepath" val="$EXPYVRROOT$/log" valType="str"/>
+      <Param name="expname" val="expyvr exp" valType="str"/>
+    </Logger>
+    <Display>
+      <Windows>
+        <Window name="win 1">
+          <Param name="fullscreen" val="False" valType="bool"/>
+          <Param name="fov" val="60.0" valType="float"/>
+          <Param name="mode" val="mono" valType="str"/>
+          <Param name="size" val="(800, 600)" valType="code"/>
+        </Window>
+      </Windows>
+    </Display>
+  </Settings>
+  <Components>
+    <Component type="ReachOut" importPath="reachout.reachOut" name="reachout">
+      <InitConfig>
+        <Param name="cubeColor" val="[1.0, 1.0, 1.0]" valType="str"/>
+        <Param name="showCube" val="True" valType="bool"/>
+        <Param name="cubeSize" val="1" valType="int"/>
+        <Param name="name" val="reachout" valType="str"/>
+        <Param name="cubeCenter" val="[0, 0, -2]" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="targetVibColor" val="[1.0, 0.0, 0.0]" valType="str"/>
+          <Param name="targetRadius" val="0.1" valType="float"/>
+          <Param name="targetPosition" val="random" valType="str"/>
+          <Param name="targetColor" val="[1.0, 1.0, 1.0]" valType="str"/>
+        </Config>
+      </Configs>
+    </Component>
+  </Components>
+  <Routines>
+    <Routine name="routine">
+      <Conditions>
+        <Condition name="cond 1">
+          <LoopVariables/>
+          <UsedComponents>
+            <UsedComponent componentName="reachout" configName="standard" isGrouped="False"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="reachout" startTime="0.0" duration="30.0"/>
+            <Occurence type="display" componentName="reachout" startTime="0.0" duration="30.0"/>
+          </RoutineFlow>
+        </Condition>
+      </Conditions>
+    </Routine>
+  </Routines>
+  <AbstractExperimentFlow>
+    <Routine routineName="routine"/>
+  </AbstractExperimentFlow>
+</ExpyVR>

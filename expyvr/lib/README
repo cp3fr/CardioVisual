@@ -1,0 +1,6 @@
+Ensure you place DLLs in the system search path:
+
+These DLLs should already be in the Python directory of the stand-alone distribution of ExpyVR (together with python26.dll).
+
+ 
+

@@ -1,0 +1,6 @@
+<ExpyVR version="0.002" encoding="utf-8" type="instance">
+  <Experiment fileName="C:\standalone\expyvr\examples\ModuleTesting\reachOut\reach.exp.xml"/>
+  <ExperimentFlow>
+    <Routine routineName="routine" condition="cond 1"/>
+  </ExperimentFlow>
+</ExpyVR>

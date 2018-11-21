@@ -1,0 +1,104 @@
+<ExpyVR version="0.003" encoding="utf-8" type="experiment">
+  <Settings>
+    <Python>
+      <ComponentPath directory="$EXPYVRROOT$/lncocomponents/"/>
+    </Python>
+    <Logger>
+      <Param name="expname" val="expyvr" valType="str"/>
+      <Param name="logtype" val="console" valType="str"/>
+      <Param name="logfreq" val="60" valType="int"/>
+      <Param name="savepath" val="$EXPYVRROOT$/log" valType="str"/>
+    </Logger>
+    <Display>
+      <Camera>
+        <Param name="posX" val="0.0" valType="float"/>
+        <Param name="posY" val="0.0" valType="float"/>
+        <Param name="posZ" val="0.0" valType="float"/>
+        <Param name="angleX" val="0.0" valType="float"/>
+        <Param name="angleY" val="0.0" valType="float"/>
+        <Param name="angleZ" val="0.0" valType="float"/>
+      </Camera>
+      <Windows>
+        <Window name="win 1">
+          <Param name="mode" val="mono" valType="str"/>
+          <Param name="size" val="(800, 600)" valType="code"/>
+          <Param name="fullscreen" val="True" valType="bool"/>
+          <Param name="screenid" val="1" valType="int"/>
+          <Param name="hidecursor" val="False" valType="bool"/>
+          <Param name="mousecameracontrol" val="False" valType="bool"/>
+          <Param name="flipScreen" val="False" valType="bool"/>
+          <Param name="mirror_3D" val="False" valType="bool"/>
+          <Param name="color" val="(0.0, 0.0, 0.0)" valType="code"/>
+          <Param name="fov" val="50.0" valType="float"/>
+          <Param name="focallength" val="0.1" valType="float"/>
+          <Param name="eyeseparation" val="0.001" valType="float"/>
+        </Window>
+      </Windows>
+    </Display>
+  </Settings>
+  <Components>
+    <Component type="Tobii" importPath="tobii.tobii" name="tobii" enabled="True">
+      <InitConfig>
+        <Param name="calibrationFile" val="$EXPYVRROOT$/lncocomponents/tobii/calibration.csv" valType="str"/>
+        <Param name="calibrationMode" val="True" valType="bool"/>
+        <Param name="logToCSV" val="False" valType="bool"/>
+        <Param name="name" val="tobii" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="showHead" val="True" valType="bool"/>
+          <Param name="showEye" val="True" valType="bool"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="networkUDP" importPath="scene.networkUDP" name="udp_handler" enabled="True">
+      <InitConfig>
+        <Param name="logToCSV" val="False" valType="bool"/>
+        <Param name="alternative_IP" val="127.0.0.1" valType="str"/>
+        <Param name="udpPort" val="8808" valType="int"/>
+        <Param name="name" val="udp_handler" valType="str"/>
+        <Param name="initCode" val="" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="updateCode" val="" valType="str"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="PythonScript" importPath="scene.pythonScript" name="script" enabled="True">
+      <InitConfig>
+        <Param name="cleanupCode" val="" valType="str"/>
+        <Param name="name" val="script" valType="str"/>
+        <Param name="initCode" val="$EXPYVRROOT$/lncocomponents/tobii/initTobii.py" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="updateCode" val="$EXPYVRROOT$/lncocomponents/tobii/updateTobii.py" valType="str"/>
+        </Config>
+      </Configs>
+    </Component>
+  </Components>
+  <Routines>
+    <Routine name="routine">
+      <Conditions>
+        <Condition name="default">
+          <UsedComponents>
+            <UsedComponent componentName="tobii" configName="standard" isGrouped="True"/>
+            <UsedComponent componentName="udp_handler" configName="standard" isGrouped="True"/>
+            <UsedComponent componentName="script" configName="standard" isGrouped="True"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="tobii" startTime="0.0" duration="-1.0"/>
+            <Occurence type="display" componentName="tobii" startTime="0.0" duration="-1.0"/>
+            <Occurence type="activation" componentName="udp_handler" startTime="0.0" duration="-1.0"/>
+            <Occurence type="display" componentName="udp_handler" startTime="0.0" duration="-1.0"/>
+            <Occurence type="activation" componentName="script" startTime="0.0" duration="-1.0"/>
+          </RoutineFlow>
+        </Condition>
+      </Conditions>
+    </Routine>
+  </Routines>
+  <AbstractExperimentFlow>
+    <Routine routineName="routine"/>
+  </AbstractExperimentFlow>
+</ExpyVR>

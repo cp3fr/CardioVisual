@@ -1,0 +1,23 @@
+161c161
+<        [cefnstv] | 
+---
+>        [cefnstvm] | 
+456a457,458
+>         glActiveTexture(GL_TEXTURE0)
+>         glClientActiveTexture(GL_TEXTURE0)
+462a465,475
+> class MaskTexCoordAttribute(TexCoordAttribute):
+>     '''MultiTexture coordinate attribute for mask.'''
+> 
+>     plural = 'masktex_coords'
+>     
+>     def enable(self):
+>         glActiveTexture(GL_TEXTURE1)
+>         glClientActiveTexture(GL_TEXTURE1)
+>         glEnableClientState(GL_TEXTURE_COORD_ARRAY)
+>         
+>                        
+497a511
+> 
+504a519
+>     'm': MaskTexCoordAttribute,

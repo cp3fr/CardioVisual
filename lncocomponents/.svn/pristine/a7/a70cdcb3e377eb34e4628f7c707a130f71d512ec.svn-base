@@ -1,0 +1,387 @@
+'''
+Created on Jan 29, 2011
+
+@author: bh
+@since: winter 2010
+
+@license: Distributed under the terms of the GNU General Public License (GPL).
+'''
+
+from os import path
+from time import sleep
+import csv, re, glob
+import threading, socket
+
+from datetime import datetime
+from pyglet.gl import *
+from pyglet import image
+from pyglet.clock import _default_time_function as time
+
+#pylnco modules
+from controller import getPathFromString
+from display.tools import *
+from abstract.AbstractClasses import DrawableModule
+
+class botEmulateThread ( threading.Thread ):
+
+
+    def __init__(self, parent, sequence = None):
+        threading.Thread.__init__(self)
+        self.module = parent
+            
+        self.line = ""
+        self.stop = False
+        self.pos = [1.0, 1.0, 1.0, 1.0]
+        self.dpos = 1.0
+        self.profile = {}
+        self.starttime = time()
+        
+        if sequence is not None and len(sequence)>0:
+            regexp = re.compile("[s][]*[(](\d+)[,](\d+)[,](\d+)[,](\d+)[,](\d+)[,](\d+)[,](\d+)[,](\d+)[)]")
+            match = regexp.match(sequence)
+            if match is not None:
+                indices = match.groups()
+                self.module.log( "Emulating polybot sequences %s"%sequence)
+                # set values for 4 positions
+                for i in range(4):
+                    if self.module.profiles.has_key(int( indices[i] )):
+                        self.profile[i] =  self.module.profiles[int( indices[i] )] 
+        
+    def run(self):
+        while not self.stop:
+            
+            if len(self.profile) == 0:
+                # no profiles? just go back and forth
+                self.pos[0] += self.dpos
+                if self.pos[0] >= 20.0 or self.pos[0] <= 0.0:
+                    self.dpos = - self.dpos
+                    
+                self.pos[1] = self.pos[0]
+                self.pos[2] = self.pos[0]
+                self.pos[3] = self.pos[0]
+            else:
+                # get index of value at 200 Hz
+                index = int ( (time()-self.starttime) * 200.0 )
+                # get values for 4 positions
+                for i in range(4):
+                    if self.profile.has_key(i):
+                        self.pos[i] = float(self.profile[i][index%len(self.profile[i])])
+                    else:
+                        self.pos[i] = 0.0
+            
+            # get the lock for the thread
+            if self.module.lock.acquire():
+            
+                # p(iterator, posBL, posBR, posLL, posLR) range: 0.0 - 20.0 cm
+                self.line = "p(1,%.1f,%.1f,%.1f,%.1f)\n"%(self.pos[0], self.pos[1], self.pos[2], self.pos[3])
+                
+                # free the lock for the module
+                self.module.lock.release()
+                
+            # necessary to give the main thread time to acquire lock
+            sleep(0.05)
+
+class botUpdateThread ( threading.Thread ):
+    
+    def __init__(self, parent):
+        threading.Thread.__init__(self)
+        self.module = parent
+        # flag=0 makes recv tell error and continue, all other values lead to freeze
+        self.stop = False
+        self.line = ""
+        self.triggerstop = re.compile("d")
+        
+    def run(self):
+        while not self.stop:
+            # get the lock for the thread
+            if self.module.lock.acquire():
+                
+                self.line = self.module.sock.recv(32)
+                # print self.line
+                if len(self.line) > 0:
+                    # force read until an end of line
+                    while self.line[len(self.line)-1] != '\n':         
+                        self.line += self.module.sock.recv(1)
+                else:
+                    sleep(0.1)
+                    
+                # free the lock for the module
+                if self.module.lock.locked():
+                    self.module.lock.release()
+                
+                if (self.triggerstop.match(self.line)):
+                    print "Explicit exit recieved from Polybot"
+                    self.stop = True
+                    
+            # necessary to give the main thread time to acquire lock
+            sleep(0)
+
+class ModuleMain(DrawableModule):
+    """
+    A simple module to read data from FreeSpace sensor.
+    libfreespace can be found at http://libfreespace.hillcrestlabs.com/node
+    """
+    defaultInitConf = {
+        'name': 'polybot',
+        'logToCSV': False,
+        'Emulation': False,
+        'profiles': ""
+    }
+    
+    defaultRunConf = {
+        'sequence': 's(1,1,0,0)',
+        'RodBackLeft': "$EXPYVRROOT$/lncocomponents/visuotactile/dot.png",
+        'RodBackRight': "$EXPYVRROOT$/lncocomponents/visuotactile/dot.png",
+        'MotionRange_Back': "(60.0, 80.0)",
+        'ExcentricityRange_Back': "(2.0, 2.0)",
+        'ScaleRange_Back': "(1.0, 1.0)",
+        'RodLegLeft': "$EXPYVRROOT$/lncocomponents/visuotactile/dot.png",
+        'RodLegRight': "$EXPYVRROOT$/lncocomponents/visuotactile/dot.png",
+        'MotionRange_Legs': "(20.0, 40.0)",
+        'ExcentricityRange_Legs': "(3.0, 3.0)",
+        'ScaleRange_Legs': "(1.0, 1.0)"
+    }
+    
+    confDescription = [
+        ('name', 'str', "Your poly robot device"),
+        ('logToCSV', 'bool', "Save data to coma-separated-values file ( <modulename>_<date>.csv )"),
+        ('Emulation', 'bool', "Emulate polybot to work offline (linear random movements)"),
+        ('profiles', 'str', "Path and base filename of numbered profile used for emulation, with a '*' where number is (e.g. '$EXPDIR$/profile_*.txt')."),
+        ('sequence', 'str', "Message to send to polybot to start the rod sequences."),
+        ('RodBackLeft', 'str', "Filename of the picture to use for the back left rod"),
+        ('RodBackRight', 'str', "Filename of the picture to use for the back right rod"),
+        ('MotionRange_Back', 'code', "Vertical range of motion on the back = pair of values in % of screen height"),
+        ('ExcentricityRange_Back', 'code', "Lateral spacing of rods at low and high location for the back, in % of screen width"),
+        ('ScaleRange_Back', 'code', "Size scaling of rods at low and high location for the back, in 1/100% of rod image size"),
+        ('RodLegLeft', 'str', "Filename of the picture to use for the left leg rod"),
+        ('RodLegRight', 'str', "Filename of the picture to use for the right leg rod"),
+        ('MotionRange_Legs', 'code', "Vertical range of motion on the legs = pair of values in % of screen height"),
+        ('ExcentricityRange_Legs', 'code', "Lateral spacing of rods at low and high location for the legs, in % of screen width"),
+        ('ScaleRange_Legs', 'code', "Size scaling of rods at low and high location for the legs, in 1/100% of rod image size"),
+    ]
+    
+    def __init__(self, controller, initConfig=None, runConfigs=None):
+        DrawableModule.__init__(self, controller, initConfig, runConfigs)
+                
+        # init 
+        self.thread = None
+        self.logActive = self.initConf['logToCSV']
+        if self.logActive:
+            now = datetime.today()
+            self.csvLogger = csv.writer(open(path.join(self.controller.gLogger.Path, now.strftime('%y%m%d%H%M%S_') + self.initConf['name'] +  '.csv') , 'w'), lineterminator = '\n')
+        
+        # init graphics
+        self.pictures = {}
+        self.lists = {}
+        # load all the images we're going to display
+        for conf in self.runConfs.values():
+            for pict in ['RodBackLeft', 'RodBackRight', 'RodLegLeft', 'RodLegRight']:
+                imageName = conf[pict]
+                if imageName in self.pictures or len(imageName) == 0 :
+                    # We've already loaded that image
+                    continue
+                pic = self.pictures[imageName] = image.load( getPathFromString(imageName) )
+                texture = pic.get_texture()
+                # Compile a display list for a quad with texture coordinates
+                t = texture.tex_coords
+                self.lists[imageName] = glGenLists(1)
+                glNewList(self.lists[imageName], GL_COMPILE)
+                glShadeModel(GL_FLAT)
+                glEnable(GL_BLEND)
+                glBlendEquation(GL_FUNC_ADD)
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)# transparency based on Source Alpha Value
+                glBindTexture(texture.target, texture.id)
+                glScalef( float(pic.width), float(pic.height), 1.0)
+                glBegin(GL_QUADS)
+                glTexCoord2f(t[0], t[1])
+                glVertex3f(-0.5, -0.50, 0.0)
+                glTexCoord2f(t[3], t[4])
+                glVertex3f(0.50, -0.50, 0.0)
+                glTexCoord2f(t[6], t[7])
+                glVertex3f(0.50, 0.50, 0.0)
+                glTexCoord2f(t[9], t[10])
+                glVertex3f(-0.50, 0.50, 0.0)
+                glEnd()
+                glEndList()
+        
+        self.range = {}
+        self.exentricity = {}
+        self.scale = {}
+
+        self.pos = {}
+        self.pos['RodBackLeft'] = 0.0
+        self.pos['RodLegLeft'] = 0.0
+        self.pos['RodBackRight'] = 0.0
+        self.pos['RodLegRight'] = 0.0
+        
+        # connect to robot
+        self.profiles = {}
+        if not self.initConf['Emulation']:
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            if (self.sock.connect_ex(("localhost", 6342)) != 0) :
+                raise RuntimeError( "Could not connect to PolyBot (localhost, 6342)")     
+        else:
+            self.sock = None
+                   
+            # load all the images we're going to display
+            fileList = glob.glob(getPathFromString(self.initConf['profiles']))
+            for f in fileList:
+                (filepath, filename) = path.split(f)
+                (shortname, extension) = path.splitext(filename)
+                ids = re.match("[^\d]*(\d+)[^\d]*", shortname)
+                if ids is not None:
+                    i = int(ids.group(1))
+                    self.log("loading emulation profile %d (%s)"%(i, f))
+                    # read data, TAB separated values
+                    values = csv.reader(open(f, 'rb'), delimiter='\t')
+                    # get the first row only
+                    self.profiles[i] = values.next()
+            
+        # useful variables for later
+        #self.regexp = re.compile("[(](\d+)[,][ ]*(\d+\.\d*)[,][ ]*(\d+\.\d*)[,][ ]*(\d+\.\d*)[,][ ]*(\d+\.\d*)[)]") 
+        self.regexp = re.compile("[p][]*[(](\d+)[,][ ]*(\d+\.\d*)[,][ ]*(\d+\.\d*)[,][ ]*(\d+\.\d*)[,][ ]*(\d+\.\d*)[)]")
+        self.updateTime = 0.02 # 50Hz
+        
+        # create thread for continuous reading of socket
+        self.lock = threading.Lock()
+            
+    def draw(self, window_width, window_height, eye=-1):
+        DrawableModule.draw(self, window_width, window_height, eye)
+
+        # Turn blending on
+        glPushAttrib(GL_ALL_ATTRIB_BITS)
+        glEnable(GL_BLEND)
+        glEnable(GL_TEXTURE_2D)
+        # Blending Function For transparency Based On Source Alpha Value
+        glBlendEquation(GL_FUNC_ADD)
+        glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA)
+        
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glLoadIdentity()
+        glOrtho(0, 1, 0, 1, 100, -100)
+        glMatrixMode(GL_MODELVIEW)
+        glEnable(GL_DEPTH_TEST)
+        
+        for rod in self.rodlist:
+            glPushMatrix()
+            glLoadIdentity()
+            glTranslatef( ( 50.0 + (self.exentricity[rod][0] + (self.pos[rod]*(self.exentricity[rod][1] - self.exentricity[rod][0]))) ) / 100.0, 
+                         ( self.range[rod][0] + self.pos[rod] * (self.range[rod][1] - self.range[rod][0]) ) / 100.0,
+                         -50.0)
+            # a = ( float(window_height) / float(window_width) )
+            glScalef( (self.scale[rod][0] + ((self.pos[rod] *(self.scale[rod][1]-self.scale[rod][0])))) / float(window_width), (self.scale[rod][0] + ((self.pos[rod] *(self.scale[rod][1]-self.scale[rod][0])))) / float(window_height), 1.0)
+            glColor4f(1.0, 1.0, 1.0, 1.0)
+            glCallList(self.lists[self.activeConf[rod]]) 
+            glPopMatrix()
+
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+        glMatrixMode(GL_MODELVIEW)
+        glPopAttrib()
+            
+    def start(self, dt=0, duration=-1, configName=None):
+        """
+        Activate the optic flow engine with the parameters passed in the conf
+        """
+        DrawableModule.start(self, dt, duration, configName)
+        
+        self.rodlist = []  # ['RodBackLeft', 'RodBackRight', 'RodLegLeft', 'RodLegRight']
+        if len(self.activeConf['RodBackLeft']) > 0:
+            self.rodlist.append('RodBackLeft')
+        if len(self.activeConf['RodBackRight']) > 0:
+            self.rodlist.append('RodBackRight')
+        if len(self.activeConf['RodLegLeft']) > 0:
+            self.rodlist.append('RodLegLeft')
+        if len(self.activeConf['RodLegRight']) > 0:
+            self.rodlist.append('RodLegRight')
+        
+        self.range['RodBackLeft'] = self.activeConf["MotionRange_Back"]
+        self.range['RodLegLeft'] = self.activeConf["MotionRange_Legs"]
+        self.range['RodBackRight'] = self.range['RodBackLeft']
+        self.range['RodLegRight'] = self.range['RodLegLeft']
+        
+        self.exentricity['RodBackRight'] = self.activeConf["ExcentricityRange_Back"]
+        self.exentricity['RodLegRight'] = self.activeConf["ExcentricityRange_Legs"]
+        self.exentricity['RodBackLeft'] = (- self.exentricity['RodBackRight'][0],- self.exentricity['RodBackRight'][1])
+        self.exentricity['RodLegLeft'] = (- self.exentricity['RodLegRight'][0],- self.exentricity['RodLegRight'][1])
+        
+        self.scale['RodBackLeft'] = self.activeConf["ScaleRange_Back"]
+        self.scale['RodLegLeft'] = self.activeConf["ScaleRange_Legs"]
+        self.scale['RodBackRight'] = self.scale['RodBackLeft']
+        self.scale['RodLegRight'] = self.scale['RodLegLeft']
+
+        self.pos['RodBackLeft'] = 0.0
+        self.pos['RodLegLeft'] = 0.0
+        self.pos['RodBackRight'] = 0.0
+        self.pos['RodLegRight'] = 0.0
+		
+		# start update
+        pyglet.clock.schedule_interval(self.update, self.updateTime)
+    
+        # read parameter sequence (strip white spaces)
+        self.sequence = self.activeConf['sequence'].replace(' ', '')
+        
+        # start reading thread
+        if self.initConf['Emulation']:
+            self.thread = botEmulateThread(parent=self, sequence = self.sequence)
+        else:
+            self.thread = botUpdateThread(parent=self)
+        self.thread.start()
+
+        # start robot sequence
+        if self.sock is not None and len(self.sequence) > 0:
+            self.log( "Sending sequence to polybot: %s t(%d)"%(self.sequence,int(duration*1000)) )
+            self.sock.send( self.sequence + "t(%d)"%(int(duration*1000)) )
+        
+    def stop(self, dt=0):
+        DrawableModule.stop(self, dt)
+        pyglet.clock.unschedule(self.update)
+              
+        if not self.thread.stop :
+            # request thread stop
+            self.thread.stop = True
+            if self.lock.locked():
+                self.lock.release()
+        # wait for the thread to terminate
+        self.thread.join(1.0)
+        
+    def cleanup(self):
+        DrawableModule.cleanup(self)
+
+        if self.thread is not None:
+            # force thread ending
+            self.thread.stop = True
+            self.thread.join()
+        # delete socket
+        if self.sock is not None:
+            self.sock.close()
+        
+    def update(self, dt):
+        """
+        The update is called regularly 
+        """
+        if not self.thread.stop and self.lock.acquire(): 
+        
+            # read line from thread and immediately let it continue
+            vals = self.regexp.match(self.thread.line)
+            # free the lock
+            self.lock.release()
+            
+            # get values of positions from vals (result of parsing the line with regular expression)
+            if(vals is None):
+                print "Incorrect input from polybot: ", self.thread.line
+            else:
+                self.pos['RodBackRight'] = float(vals.group(3)) / 20.0
+                self.pos['RodBackLeft'] = float(vals.group(2)) / 20.0
+                self.pos['RodLegRight'] = float(vals.group(5)) / 20.0
+                self.pos['RodLegLeft'] = float(vals.group(4)) / 20.0
+        
+            # fill in logs if required
+            if self.logActive:
+                # log time
+                line = [ self.controller.gTimeManager.experimentTime(), self.controller._currentRoutine, self.controller._currentCondition ]
+                # log coordinates
+                line.extend( [self.pos['RodBackRight'], self.pos['RodBackLeft'], self.pos['RodLegRight'], self.pos['RodLegLeft'] ])
+                self.csvLogger.writerow(line)
+                

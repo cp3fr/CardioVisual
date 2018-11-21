@@ -1,0 +1,22 @@
+################################################
+#
+# Cal3d cfg File
+#
+################################################
+
+scale=1.0
+
+################# Skeleton #################
+skeleton=Skeleton.CSF
+
+################# Meshes #################
+mesh=AMan0004-Mesh.CMF
+
+################# Animations #################
+animation=openlefthandTO.xaf
+animation=openrighthandTO.xaf
+
+################# Materials #################
+material=AMan0004-Mesh_1.CRF
+material=AMan0004-Mesh_2.XRF
+

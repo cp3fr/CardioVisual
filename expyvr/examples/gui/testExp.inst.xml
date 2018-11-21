@@ -1,0 +1,27 @@
+<ExpyVR version="0.001" encoding="utf-8" type="instance">
+  <Experiment fileName="testExp.exp.xml"/>
+  <ExperimentFlow>
+    <Isi name="beginwait" duration="5"/>
+    <Routine routineName="vtasynch" condition="async-right"/>
+    <Isi name="mimg-isi" duration="5"/>
+    <Routine routineName="vtasynch" condition="async-left"/>
+    <Isi name="mimg-isi" duration="35"/>
+    <Routine routineName="vtasynch" condition="async-right"/>
+    <Isi name="mimg-isi" duration="0.389"/>
+    <Routine routineName="vtasynch" condition="async-left"/>
+    <Isi name="mimg-isi" duration="0.22"/>
+    <Routine routineName="vtasynch" condition="async-right"/>
+    <Isi name="mimg-isi" duration="0.222"/>
+    <Isi name="block-isi" duration="1.0"/>
+    <Routine routineName="prstim" condition="sync"/>
+    <Routine routineName="vtasynch" condition="sync-right"/>
+    <Isi name="mimg-isi" duration="0.454"/>
+    <Routine routineName="vtasynch" condition="sync-left"/>
+    <Isi name="mimg-isi" duration="0.104"/>
+    <Routine routineName="vtasynch" condition="sync-right"/>
+    <Isi name="mimg-isi" duration="0.239"/>
+    <Routine routineName="vtasynch" condition="sync-left"/>
+    <Isi name="mimg-isi" duration="0.412"/>
+    <Isi name="block-isi" duration="1.0"/>
+  </ExperimentFlow>
+</ExpyVR>

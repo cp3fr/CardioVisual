@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>ExpyVR Tips</title>
+  </head>
+  <body>
+    <div id="container"> <iframe class="headerIframe" src="header.html"></iframe>
+      <div id="center">
+        <h1>Experiment Designer various tips</h1>
+        <h2 id="contents">Contents</h2>
+        <ul>
+          <li><a href="#envVars">Environment variables</a></li>
+          <li><a href="#errorMessages">Error messages</a></li>
+          <li> <a href="#logging">Experiment logging</a>
+            <ul>
+              <li><a href="#consoleLogs">Console logs</a></li>
+              <li><a href="#fileLogs">File logs</a></li>
+            </ul>
+          </li>
+          <li> <a href="#input">Getting user input</a>
+            <ul>
+              <li><a href="#nonBlockingInput">Non-blocking input</a></li>
+              <li><a href="#blockingInput">Blocking input</a></li>
+              <li><a href="#endingInput">Input that ends the current
+                  routine</a></li>
+            </ul>
+          </li>
+          <li><a href="#variableDuration">Variable routine duration</a></li>
+          <li><a href="#factorialDesign">Factorial design</a></li>
+          <li><a href="#scripting">Scripting</a></li>
+          <li><a href="#disabling">Temporarily disabling a component</a></li>
+          <li><a href="#grouping">Grouping timelines of components</a></li>
+        </ul>
+        <h2 id="envVars">Environment variables</h2>
+        <p>Here is the list of environment variables defining usual
+          system path which are usable everywhere a file name is
+          required:</p>
+        <table class="shown maxWidth">
+          <tbody>
+            <tr>
+              <td>$EXPYVRROOT$</td>
+              <td>Path to the installation directory of ExpyVR (where
+                the expyvr.bat is)</td>
+            </tr>
+            <tr>
+              <td>$EXPDIR$</td>
+              <td>Path to the directory containing the experiment file
+                (where the .ext.xml file is)</td>
+            </tr>
+            <tr>
+              <td>$INSTDIR$</td>
+              <td>Path to the directory containing the instance file
+                (where the .inst.xml file is)</td>
+            </tr>
+            <tr>
+              <td>$USERPROFILE$</td>
+              <td>Path to the home directory of the current user.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="errorMessages">Error messages</h2>
+        <p>When you execute an experiment instance, a new python
+          interpreter is lanched and the program crashes in case of
+          error, just displaying a dialog box which looks like this: <img
+            alt="Error dialog" src="images/error.jpg"> Hehe ! the
+          filename is wrong! You now know how to solve the problem...</p>
+        <p>To know more about the error, you shall read the error logs
+          which are saved in a file named <b>expyvrerror.log</b> in the
+          folder <b>log</b> under the execution directory of ExpyVR
+          (where <i>expyvr.bat</i> is).</p>
+        <p><i>Example of expyvrerror.log</i>:</p>
+        <pre>Time: 30 Jan 2011 16:05:06:
+Traceback (most recent call last):
+  File "runexperiment.py", line 61, in &lt;module&gt;
+    cont.loadExperiment(arg)
+  File "C:\Users\nono\Development\expyvr\src\controller\..\..\src\controller\maincontrol.py", line 48, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\nono\Development\expyvr\src\controller\..\..\src\controller\maincontrol.py", line 172, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\nono\Development\expyvr\src\controller\..\..\src\controller\maincontrol.py", line 201, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\nono\Development\expyvr\src\controller\..\..\src\controller\maincontrol.py", line 277, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\nono\Development\expyvr\src\controller\..\..\src\controller\maincontrol.py", line 352, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\nono\Development\expyvr\src\controller\..\..\src\billboard\billboardImage.py", line 60, in __init__
+    self.pictures[imageName] = image.load(imageName)
+  File "C:\Users\nono\Development\python26\lib\site-packages\pyglet\image\__init__.py", line 176, in load
+    file = open(filename, 'rb')
+IOError: [Errno 2] No such file or directory: 'C:\\Users\\nono\\Development\\selfportrait2.png'
+</pre>
+        <p>In case the last line is not sufficient to help you solve the
+          problem, send the full backtrace to the author of the
+          incriminated module.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="logging">Experiment logging</h2>
+        <p>When running an experiment, everything the program does can
+          be logged and used a-posteriori for debugging or analysis.
+          There are two places where the logs are printed out: in the
+          console and/or in a file. You can decide the log type in the
+          logger settings:</p>
+        <p><img alt="Logger settings dialog"
+            src="images/logsettings.jpg" height="172" width="295"></p>
+        <p>The log type can be console (only), file (only) or console
+          and file. Default is console only.<br>
+        </p>
+        <p>The saving path will by default point to the <i>log</i>
+          directory under the execution directory of Experiment Designer
+          thanks to the environment variable $EXPYVRROOT$, but you can
+          put the path you want (e.g. "$EXPDIR$", "C:/mylogs", or
+          "$USERPROFILE$/experiment/logs"). The given directory is
+          automatically created if not already present.<br>
+        </p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="consoleLogs">Console logs</h3>
+        <p class="centered"><img class="inline" alt="ExpyVR windows"
+            src="images/desktopexpyvr.jpg" height="418" width="475"> <img
+            class="inline" alt="Console properties"
+            src="images/consoleproperties.jpg" height="293" width="427"></p>
+        <p>The console window allows to see logs as they are printed
+          out. This is useful to verify that a script is working. To
+          improve the presentation of the text, customise it by choosing
+          <i>Properties</i> in the context menu of the window title bar
+          (right click). This allows to choose a smaller and nicer font,
+          to change the layout to have larger width and height (number
+          or characters horizontally and vertically, we advise 120 *
+          3000), or to setup a colorful display.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="fileLogs">File logs</h3>
+        <p>The log file created is named in the following way : <b>&lt;DATE&gt;&lt;TIME&gt;_&lt;EXPERIMENTNAME&gt;_log.csv</b>.
+          It can be openned as text and as spreadsheet (coma separated
+          values). By default, the experiment name is 'expyvr'.<br>
+        </p>
+        <p>Here is an example:</p>
+        <p> </p>
+        <table style=" border-collapse: collapse; width: 100%;"
+          border="1" cellpadding="5" cellspacing="0">
+          <colgroup><col style="width:48pt" span="5" width="64"> </colgroup><tbody>
+            <tr style="height:15.0pt" height="20">
+              <th style=" height: 15pt; font-weight: bold; width: 5%;"><small>componentType</small></th>
+              <th style=" font-weight: bold; width: 5%;"><small>componentName</small></th>
+              <th style=" font-weight: bold; width: 5%;"><small>absoluteTime</small></th>
+              <th style=" font-weight: bold; width: 5%;"><small>relativeTime</small></th>
+              <th style=" font-weight: bold; width: 80%;"><small>logData</small></th>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style=" height: 15pt; width: 5%;"><small>mainDisplay</small></td>
+              <td style=" width: 5%;"><small>mainDisplay</small></td>
+              <td style=" text-align: left; width: 5%;"><small>0.2217</small></td>
+              <td style=" text-align: left; width: 5%;"><small>-1</small></td>
+              <td><small>Added window win 1</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainControl</small></td>
+              <td><small>mainControl</small></td>
+              <td style="text-align: left;"><small>0.2227</small></td>
+              <td style="text-align: left;"><small>-1</small></td>
+              <td><small>Read and parsed experiment</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainControl</small></td>
+              <td><small>mainControl</small></td>
+              <td style="text-align: left;"><small>0.2235</small></td>
+              <td style="text-align: left;"><small>-1</small></td>
+              <td><small>Instantiated logger + Display</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainLogger</small></td>
+              <td><small>mainLogger</small></td>
+              <td style="text-align: left;"><small>0.2403</small></td>
+              <td style="text-align: left;"><small>0</small></td>
+              <td><small>Logger Started</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainControl</small></td>
+              <td><small>mainControl</small></td>
+              <td style="text-align: left;"><small>0.2411</small></td>
+              <td style="text-align: left;"><small>0.0008</small></td>
+              <td><small>Starting Flow Item: Routine</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainControl</small></td>
+              <td><small>mainControl</small></td>
+              <td style="text-align: left;"><small>0.2416</small></td>
+              <td style="text-align: left;"><small>0.0014</small></td>
+              <td><small>Scheduling Routine: Routine</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainControl</small></td>
+              <td><small>mainControl</small></td>
+              <td style="text-align: left;"><small>0.2421</small></td>
+              <td style="text-align: left;"><small>0.0019</small></td>
+              <td><small>Immediately activating 'hudText:myText' in
+                  condition 'default' from 0.0 to 1.0</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>hudText</small></td>
+              <td><small>myText</small></td>
+              <td style="text-align: left;"><small>0.2426</small></td>
+              <td style="text-align: left;"><small>0.0023</small></td>
+              <td><small>start with config: {'pause_on_start': False,
+                  'bold': False, 'color': (255, 0, 0, 255), 'text':
+                  'hello', 'withFrame': True, 'posX': 50.0, 'italic':
+                  False, 'posY': 50.0, 'font': 'arial', 'size': 26}</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainControl</small></td>
+              <td><small>mainControl</small></td>
+              <td style="text-align: left;"><small>0.2518</small></td>
+              <td style="text-align: left;"><small>0.0115</small></td>
+              <td><small>Immediately displaying 'hudText:myText' in
+                  condition 'default' from 0.0 to 1.0</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>hudText</small></td>
+              <td><small>hudText</small></td>
+              <td style="text-align: left;"><small>1.2644</small></td>
+              <td style="text-align: left;"><small>1.0242</small></td>
+              <td><small>stopping</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainControl</small></td>
+              <td><small>mainControl</small></td>
+              <td style="text-align: left;"><small>1.2647</small></td>
+              <td style="text-align: left;"><small>1.0245</small></td>
+              <td><small>Experiment finished</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainControl</small></td>
+              <td><small>mainControl</small></td>
+              <td style="text-align: left;"><small>1.2656</small></td>
+              <td style="text-align: left;"><small>1.0254</small></td>
+              <td><small>Cleaning up all instantiated modules</small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainLogger</small></td>
+              <td><small>mainLogger</small></td>
+              <td style="text-align: left;"><small>1.2664</small></td>
+              <td style="text-align: left;"><small>1.0262</small></td>
+              <td><small>Experiment started Mon, 17 Oct 2011 22:42:52
+                  and ended Mon, 17 Oct 2011 22:42:54</small><br>
+              </td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainLogger</small></td>
+              <td><small>mainLogger</small></td>
+              <td style="text-align: left;"><small>1.2672</small></td>
+              <td style="text-align: left;"><small>1.0269</small></td>
+              <td><small>Total experiment duration: 0:00:01.026153,
+                  unpaused experiment duration: 0:00:01.026912<br>
+                </small></td>
+            </tr>
+            <tr style="height:15.0pt" height="20">
+              <td style="height: 15pt;" height="20"><small>mainLogger</small></td>
+              <td><small>mainLogger</small></td>
+              <td style="text-align: left;"><small>1.2685</small></td>
+              <td style="text-align: left;"><small>1.0283</small></td>
+              <td><small>Saving logs, number of data entries: 15</small></td>
+            </tr>
+          </tbody>
+        </table>
+        <p><br>
+          Here is how to read this log:</p>
+        <p> </p>
+        <ul>
+          <li><b>component type:</b> gives the type of object which
+            wrote this line of log. <i>mainDisplay</i>, <i>mainControl</i>
+            and <i>mainLogger</i> are system objects. In the example,
+            only <i>hudText</i> is a user created module.</li>
+          <li><b>component name:</b> identifies the object; e.g. we can
+            see that there is only one hudText called <i>mytext</i></li>
+          <li><b>absolute time:</b> the time counting from the begining
+            of the execution of the experiment.</li>
+          <li><b>relative time:</b> the timing which we want to know:
+            when events happen from the experiment start. Negative
+            values mean this even precieds the start of experiment (i.e.
+            all initialisations).</li>
+        </ul>
+        <p>The lines of the log which are of interrest for an
+          experimenter are between "Starting" and "Experiment finished".
+          Typically, one can check with precision the duration of a
+          stimulus; in the above example, we can see that the text
+          "hello" was shown for 1.0127 second (<small>1.0242 </small>-
+          <small>0.0115</small>). The apparent imprecision is due to the
+          display refresh rate ; at 60Hz, the minimum time to display is
+          0.0166 s.<br>
+        </p>
+        <p><span style="font-weight: bold;">EXCEL tip</span> ; to
+          automatically load CSV files with MS Excel (i.e. double clic
+          on a file to import it with comas as separator), you shall
+          setup the default <span style="font-weight: bold;">List
+            Separator</span> to be a coma ',' in the custom formatting
+          pannel of your <span style="font-weight: bold;">Regional and
+            Language Options</span> from MS <span style="font-weight:
+            bold;">control pannel</span> (see <a
+href="http://office.microsoft.com/en-us/excel-help/import-or-export-text-txt-or-csv-files-HP010099725.aspx#BMchange_the_separator_in_all_.csv_text">MS
+            documentation</a>).<br>
+        </p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="input">Getting user input</h2>
+        <p>A typical task in an experiment is to get user's input after
+          a stimuli. As of today, only two components allow to get user
+          input from a button press; <b>keyboard</b> and <b>joystick</b>
+          modules (but the principle would remain the same for future
+          input modules). Here is how it works for the keyboard.</p>
+        <p>Creating a keyboard component or editting its properties
+          shows the following dialog: <img alt="Keyboard component
+            properties" src="images/keyboardinput.png"> The <i>keys</i>
+          field shall contain the list of keys to listen to in the form
+          or space separated upper-case labels of keys (the full list of
+          codes can be found in <a
+            href="http://www.pyglet.org/doc/api/pyglet.window.key-module.html">pyglet
+
+
+            documentation</a>). Here are some example of valid keys:<br>
+        </p>
+        <table style=" text-align: left; width: 80%; margin-left: auto;
+          margin-right: auto;" border="0" cellpadding="0"
+          cellspacing="0">
+          <tbody>
+            <tr>
+              <td>Special keys<br>
+              </td>
+              <td style="vertical-align: top;">
+                <pre>ENTER SPACE TAB UP DOWN RIGHT LEFT PAGEUP BEGIN  </pre>
+              </td>
+            </tr>
+            <tr>
+              <td>Alphabet keys<br>
+              </td>
+              <td style=" vertical-align: top;">
+                <pre>A B C ... </pre>
+              </td>
+            </tr>
+            <tr>
+              <td>Numbers keys<br>
+              </td>
+              <td style="vertical-align: top;">
+                <pre>_0 _1 _2 ...</pre>
+              </td>
+            </tr>
+            <tr>
+              <td>Numpad keys<br>
+              </td>
+              <td style="vertical-align: top;">
+                <pre>NUM_0 NUM_1 ... </pre>
+              </td>
+            </tr>
+            <tr>
+              <td>Function keys<br>
+              </td>
+              <td style="vertical-align: top;">
+                <pre>F1 F2...</pre>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+        <p>The keyboard module will be listenning to the keys in its
+          active configuration during the activation time (defined in
+          your routine). When one of the keys specified is pressed or
+          released, the event is logged in the experiment general log
+          (cf above).</p>
+        <p>For convinience, these events are also logged independently
+          in a separate csv file if the <i>logToCSV</i> checkbox is
+          active. In this case, a CSV file is created in the log save
+          path and named <b>&lt;DATE&gt;&lt;TIME&gt;_&lt;COMPONENTNAME&gt;.csv</b></p>
+        <p>CSV log contains the following columns:<br>
+        </p>
+        <ul>
+          <li>the time of component start (may concern multiple key
+            presses)<br>
+          </li>
+          <li>the name of the current routine</li>
+          <li>the name of the configuration of the component</li>
+          <li>the label of the key pressed</li>
+          <li>the <span style="font-weight: bold;">reaction time</span>
+            of key press (time of key press - time of component start)<br>
+          </li>
+          <li>the <span style="font-weight: bold;">duration </span>of
+            key press (time of key release - time of key press)<br>
+          </li>
+        </ul>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="nonBlockingInput">Non-blocking input</h3>
+        <p>If you want to let the user press a key at any time with no
+          effect on the execution of the experiment, you just have to
+          set an activation time as long as you need (e.g. in parallel
+          of another module) and make sure nothing is pausing the
+          experiment.</p>
+        <p>For example, the keyboard module can record several key press
+          during the 20 seconds of display of a 3D scene: <img
+            alt="Non-blocking keyboard input example routine"
+            src="images/keyboardinputnonblocking.jpg">If the user do NOT
+          provide any answer in the given time, the CSV log will still
+          contain an informative line:</p>
+        <pre>0.1062,routine,default,,-1,-1<br></pre>
+        If the user press a key but do not release before the end of the
+        key press duration will be -1.<br>
+        <pre>0.0283,routine,default,RETURN,2.2296,-1        </pre>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="blockingInput">Blocking input</h3>
+        <p>If you want to ask a question and suspend the execution of
+          the experiment until the user gives an answer on the keyboard,
+          you can do it in this way:</p>
+        <ul>
+          <li>Create a text module showing your question (and suggesting
+            which keys to press for answer) and make sure the option <b>pause
+
+
+              on start</b> is checked in its properties.</li>
+          <li>Create a keyboard module (with the corresponding answer
+            keys) and make sure the option <b>unpause</b> is checked.</li>
+          <li>Add them in your routine for a very short duration (e.g.
+            0.1s):</li>
+        </ul>
+        <p><img alt="Blocking keyboard input example routine"
+            src="images/keyboardinputblocking.jpg"> With this solution,
+          the CSV file created by the keyboard module (if <i>logToCsv</i>
+          is on) still contains the experiment time of when the
+          questions appeared (1st column), the response time (5th
+          column) and the label of the answer key. Here is an example
+          with a "L" or "R" keyboard module repeated 4 times in a loop:</p>
+        <pre>0.0430,routine,default,L,3.0624,0.1001<br>0.2748,routine,default,R,0.4025,0.0835<br>0.3896,routine,default,R,0.3859,0.1002<br>0.5052,routine,default,L,0.2014,0.1002<br></pre>
+        &nbsp;NB: the experiment<span style="font-weight: bold;"> time
+          is suspended </span>during the pause; therefore, the
+        execution time (first column) does not account for the several
+        seconds of user response time (5th column). If you don't want
+        this, use an input that ends the current routine.<br>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h3 id="endingInput">Input that ends the current routine</h3>
+        <p>Check the <b>endRoutine</b> option in a keyboard or joystick
+          component to end a routine when a key is pressed. The current
+          routine is immediately finished and the next routine is
+          started regardless of what else was scheduled to happen in
+          this routine.<br>
+          <img style=" width: 535px; height: 159px;" alt=""
+            src="images/keyboardinput5s.png">In the above example, the
+          user has 5 s to answer, but the program will immediately
+          switch to the next routine in the flow once the key is
+          released (CSV logs are normal). Here is what the execution log
+          would say:<br>
+        </p>
+        <pre>--inputKeyboard:keyboard--; 0.0322; start with config: {'keys': 'ENTER', 'endRoutine': True, 'unpause': False}<br>--inputKeyboard:keyboard--; 1.1869; Key RETURN pressed<br>--inputKeyboard:keyboard--; 2.0715; Key RETURN released<br>--mainControl:mainControl--; 2.0719; Explicit end of current routine called<br>--hudText:hudText--; 2.0728; stopping<br>--inputKeyboard:keyboard--; 2.0735; stopping</pre>
+        <p></p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="variableDuration">Infinite routine duration</h2>
+        <p>Sometimes it is not possible to know in advance how long
+          every routine will have to last. We have already seen that it
+          is possible to <a href="#endingInput">end a routine by user
+            input</a>. But there is still a fixed maximum length of the
+          routine: the routine always ends once the last component is
+          disactivated and not shown anymore. <img alt="Infinite
+            duration component" src="images/infiniteDuration.png"> This
+          screenshot shows how the duration of the <i>keyboard</i>
+          component was set to -1 to get an infinite duration. The
+          infinite duration is shown as the blue (or red) bar going over
+          the scale all the way to the border.</p>
+        <p>Of course if we have a component with an infinite duration,
+          we need to add a way to terminate that routine. Otherwise the
+          experiment would never finish. We can do that by using an
+          input module and <a href="#endingInput">ending the routine on
+            a key press</a>. Another way is to <a href="#scripting">use
+            a script</a> that checks for some condition and ends the
+          routine with the following call:</p>
+        <pre>self.controller.endCurrentRoutine()</pre>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="factorialDesign">Factorial design</h2>
+        <p>An experiment often has a factorial design which involve two
+          or more variables taking two or more values. To do this, you
+          can use the <b>factorial loop</b>. If you for example have
+          two colours (red and green) and two directions (left and
+          right) you enter these value in the <i>firstSet</i> and the <i>secondSet</i>
+          of the factorial loop: <img alt="Factorial loop properties"
+            src="images/factorialLoopProperties.png"> Then, the routines
+          under that loop will automatically create the necessary
+          conditions: <i>left-red, right-red, left-green, right-green</i>.</p>
+        <p>Finally, the components in the routines in the loop should
+          define different configurations for the different conditions
+          as needed.</p>
+        <p>Eventually, you want to make sure that the randomisation of
+          conditions is distributed uniformly among your subjects. You
+          can use the <b>Generate Many Instances</b> functionality in
+          the <i>Experiment</i> menu. This is the dialog that is shown:
+          <img alt="Generate Many Instances dialog"
+            src="images/generateManyInstances.png"> After choosing the
+          loops which should be used for the shuffling (you may not want
+          to generate all the combinations of all loops), you will be
+          required to choose a directory where to save the multiple
+          files. You can then use the numbered instance files for your
+          subjects.</p>
+        <p>It is also possible to manually create custom combination of
+          conditions by modifying an instance xml file generated and by
+          re-ordering the conditions in the xml text to match your
+          needs. Here is an .inst.xml file of a simple experiment:</p>
+        <pre>&lt;<span style="color:blue;">ExpyVR</span> <span style="color: Red;">version</span>="0.003" <span style="color: Red;">encoding</span>="utf-8"<span style="color: Red;"> type</span>="instance"&gt;
+  &lt;<span style="color:blue;">Experiment</span> <span style="color: Red;">fileName</span>="experiment.exp.xml"/&gt;
+  &lt;<span style="color:blue;">ExperimentFlow</span>&gt;
+    &lt;<span style="color:blue;">Routine</span> <span style="color: Red;">routineName</span>="start" <span style="color: Red;">condition</span>="default"/&gt;
+    &lt;<span style="color:blue;">Routine</span> <span style="color: Red;">routineName</span>="display" <span style="color: Red;">condition</span>="left-green"/&gt;
+    &lt;<span style="color:blue;">Routine</span> <span style="color: Red;">routineName</span>="display" <span style="color: Red;">condition</span>="right-red"/&gt;
+    &lt;<span style="color:blue;">Routine</span> <span style="color: Red;">routineName</span>="display" <span style="color: Red;">condition</span>="left-red"/&gt;
+    &lt;<span style="color:blue;">Routine</span> <span style="color: Red;">routineName</span>="display" <span style="color: Red;">condition</span>="right-green"/&gt;
+    &lt;<span style="color:blue;">Routine</span> <span style="color: Red;">routineName</span>="thanks" <span style="color: Red;">condition</span>="default"/&gt;
+  &lt;/<span style="color:blue;">ExperimentFlow</span>&gt;
+&lt;/<span style="color:blue;">ExpyVR</span>&gt;</pre>
+        <p>To generate different instance files, move the <i>display</i>
+          routines lines so that the order of conditions follows the
+          orders you want, and save the file under a different name.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="scripting">Scripting</h2>
+        <h3>Using python scripts in an experiment</h3>
+        Simple python scripting is possible thanks to the <img
+          class="inline" alt="Python Script component icon"
+          src="../../src/expbuilder/app/components/resources/pythonscript.png"
+          height="16" width="16"> <b>PythonScript</b> component. It
+        allows to provide an init script (executed once at run time) and
+        an update script (executed every frame).<br>
+        <br>
+        There are two ways to provide code; either direclty in the
+        properties of the module (see bellow), either by providing a
+        filename:<br>
+        <img style=" width: 393px; height: 296px;" alt="Script component
+          properties" src="images/scriptfiles.png">In the example above,
+        the script will call the python file <span style="font-style:
+          italic;">init.py</span> (located in the directory containing
+        the experiment file) once at the instanciation of the component,
+        and will repeatitively call the script <span style="font-style:
+          italic;">update.py</span> at each frame. They should be normal
+        python text files (<a
+href="http://docs.python.org/tutorial/introduction.html#first-steps-towards-programming">statement
+
+          groupping by indentation</a>, etc.).<br>
+        <br>
+        Here are some speficic guidelines for programming in an ExpyVR
+        script component:<br>
+        <ul>
+          <li>Local variables are possible, but they are valid only
+            during one execution (e.g. not shared between two runs of
+            the update code).</li>
+          <li>Component variables (named with prefix 'self.') shall be
+            created and initialized in the init code and are afterward
+            valid during the whole duration of the routine (e.g. between
+            execution of update code).</li>
+          <li>Delta time is accessible to the update script as the local
+            variable dt (dt = time in second since last update)<br>
+          </li>
+          <li>New classes can be declared in the init code.</li>
+          <li>Importing modules does not work , but many python standard
+            modules are imported by default; os, csv, datetime, re,
+            serial, socket, numpy (as np), and all pyglet.gl opengl
+            functions.<br>
+          </li>
+        </ul>
+        <h3 id="scripting">Connecting components<br>
+        </h3>
+        <p>What really makes the script component seful is its ability
+          to <span style="font-weight: bold;">read and modify </span>the
+
+          attributes of <span style="font-weight: bold;"> other modules</span>.</p>
+        <p>To know which attributes are accessible for scripting, open
+          the properties dialog of a component (click and select <i>edit</i>)
+          and check which attributes are displayed in <b>bold</b> in
+          the list:</p>
+        <p class="centered"><img class="inline" alt="Billboard Image
+            component properties" src="images/billboardProperties.PNG">
+          <img class="inline" alt="Joystick component properties"
+            src="images/joystickProperties.PNG"></p>
+        <p>As you can see, the attributes <b>scale, x, y, depth</b> and
+          <b>angle</b> of a <i>billboardImage</i> component (left) are
+          accessible and modifyable. The <b>joystick</b> attribute of
+          the <i>joystick</i> module (right) is displayed separately
+          and without a value, which means it is a read-only attribute.</p>
+        <p>Here is an example showing how to create a script which moves
+          the billboard image with the joystick: <img alt="Scripting
+            settings example" src="images/scripting.PNG"></p>
+        <ul>
+          <li>Create a billboardImage component and call it <i>image</i>
+            and provide it with a valid image</li>
+          <li>Create a Joystick component called <i>joystick</i></li>
+          <li>Create a PythonScript component called <i>script. </i><i><br>
+            </i></li>
+          <li>Ensure the <i>script</i> component is <span
+              style="font-weight: bold;">initialised after the two
+              others</span> by clicking on the component and selecting <i>move
+
+
+              to bottom</i> from the context menu.</li>
+          <li>In the initCode for the <i>script</i>, create module
+            variables (starting with "self.") which refer to the other
+            modules by using the list of modules of the controller:
+            <pre>self.img = self.controller.gModuleList['image']
+self.jtk = self.controller.gModuleList['joystick']
+</pre>
+            NB: Mutliple instruction can be separated by a semicolon ";"
+            when entering them on a single line. </li>
+          <li>In the updateCode of the script, link the attribute of the
+            joystick module to the attribute of the image module:
+            <pre>self.img.x += self.jtk.joystick.x * dt</pre>
+          </li>
+        </ul>
+        <p>In the line above, the modifiable attribute <b>x</b> of the
+          component referenced by self.img (<i>BillboardImage</i>) is
+          incremented by the value of the x axis of the attribute <b>joystick</b>
+          (DirectX object) of the <i>Joystick</i> component referenced
+          by self.jtk.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="disabling">Temporarily disabling a component</h2>
+        <p>For practical reasons, it is sometimes useful to test an
+          experiment without activating one of its components, but you
+          don't want to remove it completely as this would require to
+          re-insert it every where afterwards.</p>
+        <p>You can <i>disable</i> and <i>enable</i> a component by
+          selecting the option <i>enable/disable</i> in the context
+          menu of the component. It will then appear with a red icon (<img
+            class="inline" alt="Disabled component overlay icon"
+            src="../../src/expbuilder/app/components/resources/disabled.png">)
+          showing that it is disabled. Repeating the operation
+          re-enables the component. <img alt="Enable/disable a
+            component" src="images/enabledisable.png" height="365"
+            width="255"> After disabling the component, it appears like
+          this: <img alt="Disabled component" src="images/disabled.PNG"
+            height="83" width="86"> NB: you have to save the experiment
+          (after disabling a component) before running an instance.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <h2 id="grouping">Grouping timelines of components</h2>
+        <p>The activation and display times of a component in a
+          condition are called <i>timelines</i>. Often the timelines of
+          a given component are the same in all or most of the
+          conditions of a routine. To make it easier to change the
+          timings you can group the timelines and edit them all at once.
+          To add a timeline to the group, simply check the checkbox of
+          the corresponding component: <img alt="Grouping timelines
+            example condition" src="images/groupingTimelines.png"> In
+          the above situation the <i>hudText</i> timeline is grouped
+          whereas the <i>keyboard</i> one is not. Note that there is
+          one group per component, not one group for all the components
+          in a routine. If we now add the <i>keyboard</i> component to
+          its group, we can see how the timeline changes (it takes over
+          the timings of the group) and shows a dialog box explaining
+          for which conditions the timeline is now the same: <img
+            alt="Added timeline to group info dialog"
+            src="images/timelineAddedToGroup.png"> In the timeline
+          properties window it always explains which conditions will be
+          affected: <img alt="Component timline properties"
+            src="images/keyboardGroupedTimeline.png"> When you remove a
+          timeline from the group, you probably want the timings to be
+          different. That is why when you remove a timeline from the
+          group, the timeline properties for that individual timeline
+          are automatically shown.</p>
+        <p>Grouping only affects the timings, it has no influence on the
+          config that is used in the different conditions.</p>
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+      </div>
+      <div id="bottom"> Last update:
+        15.10.2011&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Authors: Tobias
+        Leugger, Bruno Herbelin </div>
+    </div>
+  </body>
+</html>

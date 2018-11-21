@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>ExpyVR Module Documentation</title>
+  </head>
+  <body>
+    <div id="container"> <iframe class="headerIframe" src="header.html"></iframe>
+      <div id="center">
+        <h1>Module Documentation</h1>
+        <h2 id="contents">Contents</h2>
+        <ul>
+          <li> <a href="#overview">Overview</a></li>
+          <li><a href="#coreModules">Core Modules</a></li>
+          <ul>
+            <li><a href="#hudtext">HUD Text</a></li>
+            <li><a href="#fixcross">Fixation Cross</a></li>
+            <li><a href="#hudimage">HUD Image</a></li>
+            <li><a href="#billimage">Billboard Image</a></li>
+            <li><a href="#billimagelist">Bllboard Image List</a></li>
+            <li><a href="#billvideo">Billboard Video</a></li>
+            <li><a href="#billcamera">Billboard Camera</a></li>
+            <li><a href="#sound">Sound</a></li>
+            <li><a href="#keyboard">Keyboard</a></li>
+            <li><a href="#joystick">Joystick</a></li>
+            <li><a href="#pyscript">Python Script</a></li>
+            <li><a href="#openglview">OpenGL Viewer</a></li>
+            <li><a href="#trigger">Trigger</a></li>
+            <li><a href="#glgrid">GL Grid</a><br>
+            </li>
+          </ul>
+          <li><a href="#moreModules">Additional Modules</a></li>
+          <ul>
+            <li>Stroke Stick</li>
+            <li>Avatar</li>
+            <li>Avatar Animation</li>
+            <li>Motion Capture IK</li>
+            <li>VisuoTactile</li>
+            <li>Center Reachout Task</li>
+            <li>Trajectory Following</li>
+            <li>Optic Flow</li>
+            <li>Fusion Core Tracker</li>
+            <li>OS5000 Tracker</li>
+            <li>Freespace Tracker</li>
+            <li>Stereo IR Tracker</li>
+            <li>StrokeRobot</li>
+            <li>BCI Interface</li>
+            <li>CUI Tracker</li>
+            <li>Poly Bot</li>
+            <li>Mono Bot</li>
+            <li>Arduino BVP</li>
+            <li>Arduino <br>
+            </li>
+          </ul>
+        </ul>
+        <h2 id="overview">Overview</h2>
+        <i>ExpyVR</i> is composed of a set of Python-programmed, independent
+        modules which, though they cover a wide range of functions, can be
+        easily embedded and combined into an experiment by adding them to the
+        timeline of an experimental flow. Here we explain some of the specific
+        modules which have been programmed, their parameters, and their
+        potential use. New modules can be easily added -- more details can be
+        found in the <a href="programmer.html">Programmer's Guide</a>.<br>
+        <br>
+        There are some common properties for several modules, described here and
+        referenced in the modules descriptions bellow:<br>
+        <ul>
+          <li><span style="font-weight: bold;">DISP </span>: the module can
+            display something on screen.</li>
+          <li><span style="font-weight: bold;">INPUT </span>:the module can
+            react to user input.<br>
+          </li>
+          <li><span style="font-weight: bold;">HUD </span>: it is a Head Up
+            Display, a rendering mode for 2D which has no depth information. It
+            is rendered in the order of execution of the time line (from top to
+            bottom) and displayed in front of elements rendered before (and
+            behind those rendered after).</li>
+          <li><span style="font-weight: bold;">3D </span>: it is displayed in
+            3D, taking a depth parameter into account. The order of execution
+            does not matter (as opposed to HUD). Often a 3D module offers the
+            'keyboard movable' option which allows to move the object in 3D in
+            order to place it (using left, right, up, down, page-up,and
+            page-down keys).<br>
+          </li>
+          <li><span style="font-weight: bold;">STEREO</span>: means there is the
+            possibility to choose to which eye it is displayed when using a
+            stereoscopic display mode.<br>
+          </li>
+          <li><span style="font-weight: bold;">PAUSE </span>: the module can
+            suspend the execution of the experiment when starting (a DISP
+            module) or un-suspend on user action (INPUT). <span style="font-weight: bold; font-style:
+              italic;">Warning</span>: pausing the experiment timer (as seen in
+            log files) could create disparities between relative times if
+            synchronizing across programs. <br>
+          </li>
+          <li><span style="font-weight: bold;">END</span>: the module can end
+            the execution of the routine (for INPUT modules) to continue to the
+            next routine.&nbsp;</li>
+          <li><span style="font-weight: bold;">LOG</span>: the events occurring
+            to the module are saved to a separate CSV file (for analysis).<br>
+          </li>
+        </ul>
+        <br>
+        Note that we use the terms <span style="font-style: italic;">module</span>
+        and <span style="font-style: italic;">component</span> interchangeably
+        in this guide. Also, as many individual modules are still in development
+        and being added on a regular basis, this documentation might therefore
+        not always be up-to-date.
+        <p class="toContents"><a href="#contents">Back to contents</a></p>
+        <br>
+        <h3 id="coreModules"><big>Core Modules</big></h3>
+        These modules make the core set of modules in ExpyVR, and are likely to
+        be used across many types of experiments.<br>
+        <br>
+        <table style=" width: 823px; height: 1775px;">
+          <tbody>
+            <tr>
+              <td><img alt="HUD Text component" src="../../src/expbuilder/app/components/resources/hudtext.png"></td>
+              <td id="hudtext"><b>HUD Text</b>: Display text in 2D<br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">
+                <div style="text-align: center;"><small><span style="font-weight: bold;">DISP<br>
+                      HUD</span></small><br>
+                </div>
+                <div style="text-align: center;"><small><span style="font-weight: bold;">PAUSE</span></small><br>
+                </div>
+              </td>
+              <td style="vertical-align: top;">
+                <ul>
+                  <li><em>text</em>: text to display (multiple lines is
+                    possible).<br>
+                  </li>
+                  <li><em>font, size, color, italic, bold </em>; Various font
+                    properties<br>
+                  </li>
+                  <li><span style="font-style: italic;">withFrame</span>:
+                    display text within a semi-transparent grey frame or not
+                    (for better readability)<br>
+                  </li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">posx
+                        / posy</span> </span>: where to display text. Values
+                    must be a percentage of the window size as measured from the
+                    bottom left corner (ie: 50/50 is in the middle).&nbsp;</li>
+                  <li><span style="font-style: italic;">pause_on_start</span>:
+                    Pauses experiment, suspending the timer, until another
+                    component "unpauses". <br>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="HUD Text file component" src="../../src/expbuilder/app/components/resources/hudtextfile.png"></td>
+              <td><b>HUD Text File</b>: Display lines of text of a .csv file in
+                2D</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="text-align: center;"><small><span style="font-weight: bold;">DISP<br>
+                      HUD</span></small><br>
+                </div>
+                <small><span style="font-weight: bold;">PAUSE</span></small></td>
+              <td><br>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Fixation Cross component" src="../../src/expbuilder/app/components/resources/hudcross.png"></td>
+              <td><b>Fixation Cross</b> : Display a fixation cross in 2D</td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">
+                <div style="text-align: center;"><small><span style="font-weight: bold;">DISP<br>
+                      HUD</span></small><br>
+                </div>
+                <div style="text-align: center;"><small><span style="font-weight: bold;">PAUSE</span></small></div>
+              </td>
+              <td style="vertical-align: top;">
+                <ul>
+                  <li><span style="font-style: italic;">shape</span>: shape of
+                    the fixation cross</li>
+                  <li><span style="font-style: italic;">size </span>: size of
+                    fixation cross (in terms of % of screen)<br>
+                  </li>
+                  <li><span style="font-style: italic;">pensize : </span>width
+                    of the stroke of the font (in pixels)&nbsp;</li>
+                  <li><span style="font-style: italic;">color </span>: color of
+                    fixation cross. In RGB + alpha (opacity), i.e. (R,G,B,alpha)
+                    : (0-255, 0-255, 0-255, 0-255). <br>
+                  </li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">posX
+                        / posY<span style="font-weight: bold;"> </span></span>:
+                    </span>where to display the cross. Values must be a
+                    percentage of the window size as measured from the bottom
+                    left corner (ie: 50/50 is in the middle).<br>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="HUD Image component" src="../../src/expbuilder/app/components/resources/hudimage.png"></td>
+              <td><b>HUD Image</b>: Display an image in 2D <br>
+              </td>
+            </tr>
+            <tr>
+              <td style=" vertical-align: top;">
+                <div style="text-align: center;"><small><span style="font-weight: bold;">DISP<br>
+                      HUD</span></small><br>
+                </div>
+                <div style="text-align: center;"><small><span style="font-weight: bold;">PAUSE</span></small></div>
+              </td>
+              <td style=" vertical-align: top;">
+                <ul>
+                  <li><span style="font-style: italic;">filename</span> : name
+                    of the image file to open (PNG, BMP, GIF, JPG).<br>
+                  </li>
+                  <li><span style="font-style: italic; font-weight:
+                      bold;">scale </span>: scale of the image, in % of window
+                    width.<br>
+                  </li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">posX
+                        / posY<span style="font-weight: bold;"> </span></span>:
+                    </span>where to display the image. Values must be a
+                    percentage of the window size as measured from the bottom
+                    left corner (ie: 50/50 is in the middle).</li>
+                  <li><span style="font-weight: bold;">angle</span>; rotation of
+                    the image (value in degrees)</li>
+                  <li><span style="font-weight: bold;">alpha</span>: opacity of
+                    the image&nbsp; (0.0 is transparent, 1.0 is opaque)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style=" vertical-align: top;"><img alt="Image
+                  component" src="../../src/expbuilder/app/components/resources/billboardimage.png">
+              </td>
+              <td style=" vertical-align: top;"><b><br>
+                  Billboard Image</b>: Display an image on a billboard in the 3D
+                scene.</td>
+            </tr>
+            <tr>
+              <td style=" vertical-align: top;">
+                <div style="text-align: center;"><small><span style="font-weight: bold;">DISP<br>
+                      3D</span></small><small><span style="font-weight:
+                      bold;"><br>
+                      STEREO<br>
+                      PAUSE<br>
+                      <br>
+                    </span></small></div>
+              </td>
+              <td style=" vertical-align: top;">
+                <ul>
+                  <li>keyboard_movable: for debug, allows to use keyboard
+                    (arrows left, right, up down and page up, page down) to move
+                    the billboard in the scene (X, Y and Z axis).</li>
+                </ul>
+                <ul>
+                  <li><span style="font-style: italic;">filename</span> : name
+                    of the image file to open (PNG, BMP, GIF, JPG).</li>
+                  <li><em>mask</em>: name of the image file to use as opacity
+                    mask; colors of the mask (RGB &amp; alpha) multiply the
+                    colors of pixels of the image (opaque white image does not
+                    do anything).<br>
+                  </li>
+                  <li><span style="font-style: italic; font-weight:
+                      bold;">scale </span>: scale the image by this factor (1.0
+                    for original size)</li>
+                  <li>aspect ratio: deforms the image by changing its aspect
+                    ratio (width / height)</li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">x</span>:
+                      position in the X axis</span></li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">y</span>:
+                      position in the Y axis</span></li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">depth</span>:
+                      position in the Z axis</span></li>
+                  <li><em><span style="font-weight: bold;">angle</span></em>;
+                    rotation of the billboard in the Z axis (value in degrees)</li>
+                  <li><em><strong>alpha</strong></em>: opacity of the billboard
+                    (1.0 is 100% visible)<br>
+                  </li>
+                  <li><em>flip</em>: horizontal flip to get a mirror image<br>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style=" vertical-align: top;"><img style=" width:
+                  48px; height: 48px;" alt="Video component" src="../../src/expbuilder/app/components/resources/billboardimagelist.png"></td>
+              <td style=" vertical-align: middle;"><b>Billboard Image List</b>:
+                Display an image from a sequence on a billboard in the 3D scene.</td>
+            </tr>
+            <tr>
+              <td style=" text-align: center; vertical-align: top;"><small><span
+                    style="font-weight: bold;">DISP<br>
+                    3D</span></small><small><span style="font-weight:
+                    bold;"><br>
+                    STEREO<br>
+                    PAUSE<br>
+                    LOG</span></small></td>
+              <td style=" vertical-align: top;">
+                <ul>
+                  <li><span style="font-style: italic;">files</span> : template
+                    name of the image files to open (PNG, BMP, GIF, JPG). The
+                    template name must contain a '*' character as a wildcard
+                    placeholder for the index of the image (e.g. img*.jpg means
+                    all images named img0.jpg, img1.jpg, img2.jpg, etc.). <br>
+                  </li>
+                  <li><em>preload </em>: loads every images to memory (RAM)
+                    before starting the experiment; the display is then
+                    instantaneous, but preloading can be very long for many
+                    files.</li>
+                  <li><em>keys </em>: keys (<a href="http://www.pyglet.org/doc/api/pyglet.window.key-module.html">pyglet
+                      keyboard symbol</a>) to be used to browse into the list of
+                    images.<br>
+                  </li>
+                </ul>
+                <ul>
+                  <li><span style="font-style: italic; font-weight:
+                      bold;">index: </span><span style="font-weight:
+                      bold;"></span>index of the image to display (e.g. index 1
+                    loads img1.jpg))<span style="font-style:
+                      italic;"><br>
+                    </span></li>
+                  <li><span style="font-style: italic; font-weight:
+                      bold;">scale </span>: scale the image by this factor (1.0
+                    for original size)</li>
+                  <li>aspect ratio: deforms the image by changing its aspect
+                    ratio (width / height)</li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">x</span>:
+                      position in the X axis</span></li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">y</span>:
+                      position in the Y axis</span></li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">depth</span>:
+                      position in the Z axis</span></li>
+                  <li><em><span style="font-weight: bold;">angle</span></em>;
+                    rotation of the billboard in the Z axis (value in degrees)</li>
+                  <li><em><strong>alpha</strong></em>: opacity of the billboard
+                    (1.0 is 100% visible)<br>
+                  </li>
+                  <li><em>flip</em>: horizontal flip to get a mirror image<br>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Video component" src="../../src/expbuilder/app/components/resources/billboardvideo.png"></td>
+              <td><b>Video</b>: Display a video on a billboard in the 3D scene.</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: top;"><small><span
+                    style="font-weight: bold;">DISP<br>
+                    3D</span></small><small><span style="font-weight:
+                    bold;"><br>
+                    STEREO<br>
+                    PAUSE<br>
+                    <br>
+                  </span></small></td>
+              <td style="vertical-align: top;">
+                <ul>
+                  <li><span style="font-style: italic;">filename</span> : name
+                    of the video file to open ( AVI, DivX, H.263, H.264, MPEG,
+                    MPEG-2, OGG/Theora, Xvid, WMV).</li>
+                  <li><em>mask</em>: name of the image file to use as opacity
+                    mask; colors of the mask (RGB &amp; alpha) multiply the
+                    colors of pixels of the image (opaque white image does not
+                    do anything).</li>
+                  <li><em>loop </em>: restart the video when at end</li>
+                  <li><em>volume </em>: volume of audio output (in %)<br>
+                  </li>
+                  <li><span style="font-style: italic; font-weight:
+                      bold;">scale </span>: scale the image by this factor (1.0
+                    for original size)</li>
+                  <li>aspect ratio: deforms the image by changing its aspect
+                    ratio (width / height)</li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">x</span>:
+                      position in the X axis</span></li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">y</span>:
+                      position in the Y axis</span></li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">depth</span>:
+                      position in the Z axis</span></li>
+                  <li><span style="font-weight: bold;">angle</span>; rotation of
+                    the billboard in the Z axis (value in degrees)</li>
+                  <li><em><strong>alpha</strong></em>: opacity of the billboard
+                    (1.0 is 100% visible)<br>
+                  </li>
+                  <li><em>flip</em>: horizontal flip to get a mirror image</li>
+                </ul>
+                Comments:<br>
+                <ul>
+                  <li>Pausing the execution (e.g. with the <span style="font-style: italic;">pause_on_start</span>
+                    option) also pauses the playing of the video</li>
+                  <li>The activation time-line determines when the movie is
+                    playing<br>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Webcam component" src="../../src/expbuilder/app/components/resources/billboardcamera.png"></td>
+              <td><b>Webcam</b>: Display the image of a webcam on a billboard in
+                the 3D scene.</td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;" align="center"><small><span style="font-weight: bold;">DISP<br>
+                    3D</span></small><small><span style="font-weight:
+                    bold;"><br>
+                  </span></small>
+                <div><small><span style="font-weight:
+                    bold;"> STEREO</span></small></div>
+              </td>
+              <td style="vertical-align: top;">
+                <ul>
+                  <li><em>opencvid</em>: identifier of the webcam (0, 1, and 2
+                    should work, more is unknown)</li>
+                  <li><em>opencvmaxwidth </em>: maximum width of the opencv
+                    frames, this allows to limit the frame sizes for webcams
+                    which allows to select different resolutions (e.g. 320, 640,
+                    1024, 1280). Lower resolution means higher frequency.</li>
+                  <li><em>update_time</em>: update interval in second (e.g. 0.33
+                    is 30Hz). If you don't know the update interval for your
+                    webcam, leave it to zero; the module will determine it
+                    automatically at init (the value determined automatically is
+                    shown in the logs; you can use it afterwards)</li>
+                  <li><em>bg_subtract_key</em>: list of keyboard codes (<a href="http://www.pyglet.org/doc/api/pyglet.window.key-module.html">pyglet
+                      keyboard symbol</a>) to define the keys initiating the
+                    background subtraction (capture a frame of the background)</li>
+                  <li><em>bg_subtract_thresh</em>: luminance difference
+                    threshold used to subtract the background from the rest of
+                    the captured frames [0 256]</li>
+                </ul>
+                <p> </p>
+                <ul>
+                  <li><span style="font-style: italic;">delay</span>: delay
+                    between captured frames and displayed frames, in seconds
+                    (e.g. 0.4s).</li>
+                  <li><em>mask</em>: name of the image file to use as opacity
+                    mask; colors of the mask (RGB &amp; alpha) multiply the
+                    colors of pixels of the image (opaque white image does not
+                    do anything).<br>
+                  </li>
+                  <li><span style="font-style: italic; font-weight:
+                      bold;">scale </span>: scale the image by this factor (1.0
+                    for original size)</li>
+                  <li>aspect ratio: deforms the image by changing its aspect
+                    ratio (width / height)</li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">x</span>:
+                      position in the X axis</span></li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">y</span>:
+                      position in the Y axis</span></li>
+                  <li><span style="font-style: italic;"><span style="font-weight: bold;">depth</span>:
+                      position in the Z axis</span></li>
+                  <li><em><span style="font-weight: bold;">angle</span></em>:
+                    rotation of the billboard in the Z axis (value in degrees)</li>
+                  <li><em><strong>alpha</strong></em>: opacity of the billboard
+                    (1.0 is 100% visible)</li>
+                  <li><em>flip</em>: horizontal flip to get a mirror image</li>
+                  <li><em>greyscale</em>: convert frames to greyscale<br>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Sound component" src="../../src/expbuilder/app/components/resources/audiofile.png"></td>
+              <td><b><a id="sound" name="sound"></a>Sound</b>: Play an audio
+                file (*.wav, *.mp3, etc.)</td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;"><br>
+              </td>
+              <td style="vertical-align: top;">
+                <ul>
+                  <li><span style="font-style: italic;">filename</span> : name
+                    of the audio file to open ( .WAV )</li>
+                  <li>loop: <br>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Whitenoise component" src="../../src/expbuilder/app/components/resources/whitenoise.png"></td>
+              <td><b>Whitenoise</b>: Play an audio white noise <br>
+              </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Keyboard component" src="../../src/expbuilder/app/components/resources/keyboard.png"></td>
+              <td><b>Keyboard</b>: Listen to keyboard events, log their timing,
+                and possibly unpause the script.</td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;"><br>
+              </td>
+              <td style="vertical-align: top;"><br>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Joystick component" src="../../src/expbuilder/app/components/resources/joystick.png"></td>
+              <td><b>Joystick</b>: Listen to joystick events, log their timing,
+                and possibly unpause the script.</td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;"><br>
+              </td>
+              <td style="vertical-align: top;"><br>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="serial component" src="../../src/expbuilder/app/components/resources/serial.png"></td>
+              <td><b>Serial</b>: Listen to a serial port and expose data for
+                scripting.</td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Trigger component" src="../../src/expbuilder/app/components/resources/trigger.png"
+                  width="44" height="42"></td>
+              <td><b>Trigger</b>: Send triggers on the parallel port.</td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+                <br>
+                How to setup Parrallel port with inPout interface:<br>
+                1&nbsp;&nbsp; - Uncompress the InpOutBinaries_1500.zip (in
+                ExpyVR\expyvr\resources\deployment)<br>
+                2&nbsp;&nbsp; - copy the win32 folder locally in your computer
+                (e.g. desktop)<br>
+                3&nbsp;&nbsp; - run the InstallDriver.exe : agree to the dialog
+                box (enter credentials if required)<br>
+                (4) - For x64 systems, copy the corresponding inpout32.dll into
+                the 'expyvr/lib/' directory (replace the file)<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td><img title="Python  Code component" style=" width: 54px; height: 54px;"
+                  alt="Python  Code component" src="../../src/expbuilder/app/components/resources/pythonscript.png"></td>
+              <td><b>Script</b>: Generic placeholder for Python code.</td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;"><br>
+              </td>
+              <td style="vertical-align: top;"><br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;"><img title="OpenGL module" style=" width: 48px;
+                  height: 48px;" alt="OpenGL module" src="../../src/expbuilder/app/components/resources/openglviewer.png"><br>
+              </td>
+              <td style="vertical-align: top;"><br>
+                <b>OpenGL</b>: Generic placeholder for OpenGL code to render 3D
+                objects<br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;"> <br>
+              </td>
+              <td style="vertical-align: top;"> <br>
+              </td>
+            </tr>
+            <tr>
+              <td><img style=" width: 48px;
+                  height: 48px;" alt="GL Grid component" src="file:///C:/ExpyVR/expyvr/src/expbuilder/app/components/resources/glgrid.png"></td>
+              <td><b>GL Grid</b>:Simple 3D grid to help visualize the space and
+                location of objects in 3D</td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+              </td>
+            </tr>
+            <tr>
+              <td><img style=" width: 48px;
+                  height: 48px;" alt="Alt-Tab component" src="file:///C:/ExpyVR/expyvr/src/expbuilder/app/components/resources/alttab.png"></td>
+              <td><b>AltTab</b>:Simulate the [Alt][Tab] to switch between
+                application windows.</td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="toContents"><a href="user.html#contents"><br>
+          </a></p>
+        <p class="toContents"><a href="#contents">Back to contents</a><br>
+        </p>
+        <h3 id="coreModules"><big>Additional Modules</big></h3>
+        These modules extend ExpyVR, often in an experiment-specific manner. As
+        such, only a quick explanation<br>
+        of the module will be given so that you can get an idea for what it
+        could be used. If you want further information, <br>
+        contact the author of the module.<br>
+        <br>
+        <br>
+        <table style="width: 668px; height: 900px;">
+          <tbody>
+            <tr>
+              <td><br>
+              </td>
+              <td id="hudtext"><b>Micophone</b>:<br>
+                This module was developed in order to record auditory
+                (microphone-based) reaction times. Default sampling rate is 22
+                000Hz, and default frames per buffer is 200. Changing these
+                values will have close to zero impact, as this only changing the
+                sampling rate of the underlying module on which the microphone
+                module is built upon. Checking "EndRoutine" will end the
+                visualization of on-line intensities being recorded as soon as a
+                supra-threshold intensity is recorded. "Record" is in a sense
+                it's counterpart, as it will record all data, even after the
+                first supra-threshold value has been recorded. Threshold has to
+                be determined for the specific environment in which the
+                experiment will be run. The Microphone module updates every 17
+                milliseconds.&nbsp; </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><b>Avatar</b> : <br>
+              </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><b>Avatar Animation</b>: <br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;"><br>
+              </td>
+              <td style="vertical-align: top;"><b>Motion Capture IK</b>: <br>
+              </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><b>Visuo-tactile</b>: <br>
+              </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td> <b>Avatar</b>: <br>
+              </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+              </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+              </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+              </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+              </td>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;"><br>
+              </td>
+              <td style="vertical-align: top;"><br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;"><br>
+              </td>
+              <td style="vertical-align: top;"><br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="toContents"><a href="user.html#contents"><br>
+          </a></p>
+        <br>
+      </div>
+      <div id="bottom"> Last update: 22.10.2011 &nbsp;
+        |&nbsp;&nbsp;&nbsp;Author: Nathan Evans<br>
+      </div>
+    </div>
+  </body>
+</html>

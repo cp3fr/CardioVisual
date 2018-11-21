@@ -1,0 +1,122 @@
+<config_minicave>
+  <!--  How to configure
+  		height of the rendering: H
+		width of the rendering: W = H * 1.3333333333
+		
+		W & H must be at least twice below you display resolution for seeing all renderings
+
+		rendering position:
+		<- mainScreen width ->
+	    _______________________   _
+	    |     |         |     |   |
+	    |     |         |     |   |
+	    |     |_________|     |   | mainScreen height
+	    |_____|         |_____|   |
+			  |         |         |
+	          |_________|         |
+
+		mainScreen size:
+			height = H*2
+			width  = W+H*2
+			
+		wallTexture should be power of 2 e.g. 1024x1024
+		
+		windows positions indicate the position in pixel of each corner.
+		Windows OS has its origin on the top left corner of the main display
+		To find your main display go into "Control Panel">"Adjust Screen Resolution"
+		window 1 position:         window 2 position:
+			left   = 0             left   = display width resolution
+			top    = 0             top    = 0
+			right  = fboWidth/2    right  = display width resolution+fboWidth/2
+			bottom = fboHeight     bottom = fboHeight
+	
+  <configuration name="myName">
+	<mainScreen width="W+H*2" height="H*2"/>
+	<wallTexture width="1024" height="1024"/>
+	<window left="marginLeft" top="marginTop" right="marginLeft + fboWidth/2" bottom="marginTop + fboHeight"/>
+	<window left="marginLeft" top="marginTop" right="marginLeft + fboWidth/2" bottom="marginTop + fboHeight"/>
+  </configuration>
+  /!\ if the second window is on the right of the first, left = rightOfFirstWindow + marginLeft
+  /!\ if the second window is below the first, top = bottomOfFirstWindow + marginTop
+  -->
+  <default name="CAVE"/>
+  
+  
+  <!--  CAVE configuration  
+		W = 1024
+		H =  768
+		<- - - -width- - - - ->
+	    __768____1024_____768__
+	   1|     |         |     |   |h
+	   0|     |         |     |   |e
+	   2|     |_________|     |   |i
+	   4|_____|7        |_____|   |g
+			  |6        |         |h
+	          |8________|         |t
+	-->
+  <configuration name="CAVE">
+	<mainScreen width="2560" height="1536"/>
+	<wallTexture width="1024" height="1024"/>
+	<window left="0" top="1536" right="1280" bottom="3072"/>
+	<window left="0" top="0"	right="1280" bottom="1536"/>
+  </configuration>
+
+  <!--  two display configuration
+		best one if you have at least two displays
+	    size of each display is 1680x1050
+		W = 812
+		H = 384
+	    _______________       _______________
+	   |   L   |       |     |   F   |       |
+	   |       |       |     |       |       | 
+	   |___R___|       |     |___B___|       | 
+	   |               |     |               |
+	   |_______________|     |_______________|
+		   Display 1             Display 2
+	-->
+  <configuration name="twoDisplay">
+	<mainScreen width="1580" height="768"/>
+	<wallTexture width="1024" height="1024"/>
+	<window left="0"	top="20" right="790"  bottom="788"/>
+	<window left="1680" top="20" right="2470" bottom="788"/>
+  </configuration>
+
+  <!--  one display configuration also default configuration
+		size of the display is 1680x1050
+		W = 648
+		H = 486
+	    _______________ 
+	   |   L   |   F   |
+	   |       |       |
+	   |___R___|___B___|
+	   |               |
+	   |_______________|
+		   Display 1
+	-->
+  <configuration name="oneDisplay">
+	<mainScreen width="1620" height="972"/>
+	<wallTexture width="1024" height="1024"/>
+	<window left="20"  top="20" right="830"  bottom="992"/>
+	<window left="850" top="20" right="1660" bottom="992"/>
+  </configuration>
+
+  <!--  one display configuration but on the second screen (on the right thant the first one)
+		size of the display is 1680x1050
+		W = 648
+		H = 486
+	    _______________ 
+	   |   L   |   F   |
+	   |       |       |
+	   |___R___|___B___|
+	   |               |
+	   |_______________|
+		   Display 2
+	-->
+  <configuration name="oneDisplaySecondScreen">
+	<mainScreen width="1620" height="972"/>
+	<wallTexture width="1024" height="1024"/>
+	<window left="1700" top="20" right="2510" bottom="992"/>
+	<window left="2530" top="20" right="3340" bottom="992"/>
+  </configuration>
+
+</config_minicave>

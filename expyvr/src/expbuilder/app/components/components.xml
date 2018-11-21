@@ -1,0 +1,28 @@
+<ExpyVR version="0.003" encoding="utf-8" type="components">
+  <Components>
+    <Component type="HudText" importPath="hud.hudText" />
+    <Component type="HudTextFile" importPath="hud.hudTextFile" />
+    <Component type="HudCross" importPath="hud.hudCross" />
+    <Component type="HudImage" importPath="hud.hudImage" />
+    <Component type="BillboardImage" importPath="billboard.billboardImage" />
+    <Component type="BillboardImageList" importPath="billboard.billboardImageList" />
+    <Component type="BillboardVideo" importPath="billboard.billboardVideo" />
+    <Component type="BillboardCamera" importPath="billboard.billboardCamera" />
+    <Component type="AudioFile" importPath="audio.audioFile" />
+    <Component type="WhiteNoise" importPath="audio.whitenoise" />
+    <Component type="Keyboard" importPath="input.inputKeyboard" />
+    <Component type="Mouse" importPath="input.inputMouse" />
+    <Component type="Joystick" importPath="input.inputJoystick" />
+    <Component type="Trigger" importPath="output.triggerSend" />
+    <Component type="TriggerSerial" importPath="output.triggerSerial" />
+    <Component type="PythonScript" importPath="scene.pythonScript" />
+    <Component type="networkUDP" importPath="scene.networkUDP" />
+    <Component type="Serial" importPath="input.inputSerial" />
+    <Component type="OpenglViewer" importPath="scene.openglViewer" />
+    <Component type="GLGrid" importPath="scene.mainGrid" />    
+    <Component type="AltTab" importPath="win32.AltTab" />
+    <Component type="InformationDialog" importPath="dialog.information" />
+    <Component type="ScaleDialog" importPath="dialog.scale" />
+    <Component type="ParallelPortInput" importPath="input.inputParallel" />
+  </Components>
+</ExpyVR>

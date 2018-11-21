@@ -1,0 +1,119 @@
+body {
+	color: #000;
+	background: #fff;
+	font-size: 100.01%;
+	font-family: Arial, sans-serif;
+	margin: auto;
+	padding: 20px 20px 20px 30px;
+	width: 1000px;
+}
+
+body.iframe {
+	padding: 0px;
+	width: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+a:visited { 
+}
+a:focus {
+	text-decoration: underline;
+}
+a:hover { 
+	text-decoration: underline;
+}
+
+iframe.headerIframe {
+	width: 100%;
+	height: 120px;
+	border: 0;
+}
+
+.centered {
+	text-align: center;
+}
+
+div#container {
+	margin: 0em;
+	padding: 0em;
+	border: 3px solid #000;
+}
+
+div#header {
+	margin: 0em;
+	padding: 0.5em 1em;
+	font-weight: bold;
+	font-size: 2em;
+	text-align: center;
+}
+
+#header a {
+	color: #000;
+	text-decoration: none;
+}
+
+div#logo {
+	left: 0px;
+}
+
+div#navigation {
+	line-height: 2em;
+	text-align: center;
+}
+
+#navigation ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#navigation ul li {
+	display: inline-block;
+	min-width: 10em;
+}
+
+div#center {
+	padding: 1em;
+	min-height: 20em;
+	border-bottom: 3px solid #000;
+	border-top: 3px solid #000;
+}
+
+#center img {
+	display: block;
+	margin: 10px auto;
+}
+
+#center img.inline {
+	display: inline;
+	margin: 0;
+}
+
+.toContents {
+	text-align: right;
+	font-size: 80%;
+}
+
+table.shown, table.shown td, table.shown th {
+	border: 1px solid black;
+	border-collapse: collapse;
+	padding: 4px;
+}
+
+table.maxWidth {
+	width: 100%;
+}
+
+div#bottom {
+	margin: 0em;
+	padding: 0.5em 1em;
+	text-align: center;
+	font-size: 0.7em;
+}
+
+pre {
+	border: 1px solid #ccc;
+	padding: 5px;
+}

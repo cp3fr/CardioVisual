@@ -1,0 +1,380 @@
+'''
+Created on Feb, 2012
+
+@author: cpf
+@since: spring 2012
+
+@license: Distributed under the terms of the GNU General Public License (GPL).
+'''
+from os import path
+import os, csv, re, serial
+import threading, socket
+import time
+import random
+
+from datetime import datetime
+from pyglet.gl import *
+from pyglet import image
+import numpy as np
+
+#pylnco modules
+from pyglet.clock import _default_time_function as time
+from controller import getPathFromString
+from display.tools import *
+from abstract.AbstractClasses import DrawableModule
+import controller.trigManager as tManager
+from output.parallelPort import *
+
+
+
+
+class ModuleMain(DrawableModule):
+    """
+    A module to precisely control timing of stimulus pair presentation
+    """
+    defaultInitConf = {
+        'name': 'multiStim',
+        'logToCSV': False,
+        'address': '0xD050'
+    }
+    
+    defaultRunConf = {
+        'SOA': "[-0.200, -0.090, -0.055, -0.030, -0.020, 0.020, 0.030, 0.055, 0.090, 0.200]",
+        'Tactil': "[48, 192]",
+        'Visual': "[1010, 101]",
+        'durTac': "0.035",
+        'durVis': "0.035",
+        'ISI': "[2.0, 3.0]",
+        'visUL': "$EXPYVRROOT$/lncocomponents/visuotactile/dot.png",
+        'visUR': "$EXPYVRROOT$/lncocomponents/visuotactile/dot.png",
+        'visDL': "$EXPYVRROOT$/lncocomponents/visuotactile/dot.png",
+        'visDR': "$EXPYVRROOT$/lncocomponents/visuotactile/dot.png",
+        'posVert': "[55.0, 55.0, 50.0, 50.0]",
+        'posHorz': "[48.0, 52.0, 48.0, 52.0]",
+        'scaleMax': "[1.0, 1.0, 1.0, 1.0]",
+        'scaleMin': "[0.0, 0.0, 0.0, 0.0]"
+    }
+    
+    confDescription = [
+        ('name', 'str', "Python script"),
+        ('logToCSV', 'bool', "Save data to coma-separated-values file ( <modulename>_<date>.csv )"),  
+        ('address', 'str', "Address of port"),
+        ('SOA', 'code', "List of stimulus onset asynchronies in seconds: '-' Visual-Tactil, '+' Tactil-Visual (list)."),
+        ('Tactil', 'code', "List of trigger codes for the four vibrators, UL=16 UR=64 DL=32 DR=128, ("),
+        ('Visual', 'code', "List of visual stim configurations, UL=1000 UR=100 DL=10 DR=1"),
+        ('durTac', 'code', ""),
+        ('durVis', 'code', ""),
+        ('ISI', 'code', ""),
+        ('visUL', 'str', ""),
+        ('visUR', 'str', ""),
+        ('visDL', 'str', ""),
+        ('visDR', 'str', ""),
+        ('posVert', 'code', ""),
+        ('posHorz', 'code', ""),
+        ('scaleMax', 'code', ""),
+        ('scaleMin', 'code', "")
+    ]
+    
+    
+    
+    
+    
+    def __init__(self, controller, initConfig=None, runConfigs=None):
+        
+        DrawableModule.__init__(self, controller, initConfig, runConfigs)
+        
+        self.lastTrigTime = 0
+        
+        # connect to parallel port
+        self.address = self.initConf['address']
+        try:
+            self.pp = ParallelPort(self.address)
+        except:
+            print '#### Warning: Could not connect to Parallel Port'
+            self.pp = None
+            pass
+        
+        # init logger
+        self.logActive = self.initConf['logToCSV']
+        if self.logActive:
+            now = datetime.today()
+            self.csvLogger = csv.writer(open(path.join(self.controller.gLogger.Path, \
+                                        now.strftime('%y%m%d%H%M%S_') + self.initConf['name'] +  \
+                                        '.csv') , 'w'), lineterminator = '\n')
+            self.csvLogger.writerow(['absTime', 'expTime', 'displayTime', 'routine', \
+                                     'currCond','maxCond','tacTrigger','visConfig', \
+                                     'SOA','ISI','timeTac','timeVis','key', 'reactionExpTime', \
+                                     'reactionDisplayTime', 'pressDuration'])
+                
+        # init graphics
+        self.pictures = {}
+        self.lists = {}
+        # load all the images we're going to display
+        for conf in self.runConfs.values():
+            for pict in ['visUL', 'visUR', 'visDL', 'visDR']:
+                imageName = conf[pict]
+                if imageName in self.pictures or len(imageName) == 0 :
+                    # We've already loaded that image
+                    continue
+                pic = self.pictures[imageName] = image.load( getPathFromString(imageName) )
+                texture = pic.get_texture()
+                # Compile a display list for a quad with texture coordinates
+                t = texture.tex_coords
+                self.lists[imageName] = glGenLists(1)
+                glNewList(self.lists[imageName], GL_COMPILE)
+                glShadeModel(GL_FLAT)
+                glEnable(GL_BLEND)
+                glBlendEquation(GL_FUNC_ADD)
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)# transparency based on Source Alpha Value
+                glBindTexture(texture.target, texture.id)
+                glScalef( float(pic.width), float(pic.height), 1.0)
+                glBegin(GL_QUADS)
+                glTexCoord2f(t[0], t[1])
+                glVertex3f(-0.5, -0.50, 0.0)
+                glTexCoord2f(t[3], t[4])
+                glVertex3f(0.50, -0.50, 0.0)
+                glTexCoord2f(t[6], t[7])
+                glVertex3f(0.50, 0.50, 0.0)
+                glTexCoord2f(t[9], t[10])
+                glVertex3f(-0.50, 0.50, 0.0)
+                glEnd()
+                glEndList()
+                
+        self.posVert = {}
+        self.posHorz = {}
+        self.scaleMax = {}
+        self.scaleMin = {}
+        self.currentScale = {}
+        self.cond = []
+        self.durVib = []
+        self.durFlash = []
+        self.durWait = []
+        self.parameter = []
+        
+        self.updateTime = 0.02 # 50Hz
+
+        # initiate local variables
+        self.condIterator = -1
+        self.vOffTime = 0.0
+        self.vOnTime = 0.0
+        self.fOffTime = 0.0
+        self.fOnTime = 0.0
+        self.vibDone = True
+        self.flashDone = True
+        self.lastVib = 0.0
+        self.lastFlash = 0.0
+        self.nextVib = 0.0
+        self.nextFlash = 0.0
+        self.vibOn = False
+        self.flashOn = False
+        self.lock = False
+        
+        
+        
+        
+        
+    def draw(self, window_width, window_height, eye=-1):
+        
+        DrawableModule.draw(self, window_width, window_height, eye)
+
+        # Turn blending on
+        glPushAttrib(GL_ALL_ATTRIB_BITS)
+        glEnable(GL_BLEND)
+        glEnable(GL_TEXTURE_2D)
+        # Blending Function For transparency Based On Source Alpha Value
+        glBlendEquation(GL_FUNC_ADD)
+        glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA)
+        
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glLoadIdentity()
+        glOrtho(0, 1, 0, 1, 100, -100)
+        glMatrixMode(GL_MODELVIEW)
+        glEnable(GL_DEPTH_TEST)
+        
+        for stim in self.vislist:
+            glPushMatrix()
+            glLoadIdentity()
+            # glTranslatef(20.0 / 100.0, 70.0 /100.0, -50.0)
+            glTranslatef( self.posHorz[stim] / 100.0, self.posVert[stim] / 100.0, -50.0)
+            # a = ( float(window_height) / float(window_width) )
+            glScalef( self.currentScale[stim] / float(window_width), self.currentScale[stim] / float(window_height), 1.0)
+            glColor4f(1.0, 1.0, 1.0, 1.0)
+            glCallList(self.lists[self.activeConf[stim]]) 
+            glPopMatrix()
+
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+        glMatrixMode(GL_MODELVIEW)
+        glPopAttrib()
+    
+    
+    
+    
+    
+    
+    def start(self, dt=0, duration=-1, configName=None):
+        
+        DrawableModule.start(self, dt, duration, configName)
+        
+        self.vislist = []  # ['visUL', 'visUR', 'visDL', 'visDR']
+        if len(self.activeConf['visUL']) > 0:
+            self.vislist.append('visUL')
+        if len(self.activeConf['visUR']) > 0:
+            self.vislist.append('visUR')
+        if len(self.activeConf['visDL']) > 0:
+            self.vislist.append('visDL')
+        if len(self.activeConf['visDR']) > 0:
+            self.vislist.append('visDR')
+        
+        # get parameters for the visual stimuli from active conf
+        self.posVert['visUL'] = self.activeConf["posVert"][0]
+        self.posVert['visUR'] = self.activeConf["posVert"][1]
+        self.posVert['visDL'] = self.activeConf["posVert"][2]
+        self.posVert['visDR'] = self.activeConf["posVert"][3]
+        
+        self.posHorz['visUL'] = self.activeConf["posHorz"][0]
+        self.posHorz['visUR'] = self.activeConf["posHorz"][1]
+        self.posHorz['visDL'] = self.activeConf["posHorz"][2]
+        self.posHorz['visDR'] = self.activeConf["posHorz"][3]
+        
+        self.scaleMax['visUL'] = self.activeConf["scaleMax"][0]
+        self.scaleMax['visUR'] = self.activeConf["scaleMax"][1]
+        self.scaleMax['visDL'] = self.activeConf["scaleMax"][2]
+        self.scaleMax['visDR'] = self.activeConf["scaleMax"][3]
+        
+        self.scaleMin['visUL'] = self.activeConf["scaleMin"][0]
+        self.scaleMin['visUR'] = self.activeConf["scaleMin"][1]
+        self.scaleMin['visDL'] = self.activeConf["scaleMin"][2]
+        self.scaleMin['visDR'] = self.activeConf["scaleMin"][3]
+        
+        # initially set current scale to minimum value
+        self.currentScale['visUL'] = self.scaleMin['visUL']
+        self.currentScale['visUR'] = self.scaleMin['visUR']
+        self.currentScale['visDL'] = self.scaleMin['visDL']
+        self.currentScale['visDR'] = self.scaleMin['visDR']
+        
+        # set timing variables
+        self.durVib = self.activeConf["durTac"]
+        self.durFlash = self.activeConf["durVis"]
+        self.isiRange = self.activeConf["ISI"]
+        
+        self.currentCond = -1
+        self.currentTactil = 0
+        self.currentVisual = "0000"
+        self.currentSOA = 0.0
+        self.currentISI = 0.0
+        
+        # compose a condition label vector consisting of all visual x tactile x soa conditons
+        for i in range((len(self.activeConf["Tactil"])*len(self.activeConf["Visual"])*len(self.activeConf["SOA"]))):
+            self.cond.append(i)
+            
+        # randomize the order of the condition label vector for the first trials
+        random.shuffle(self.cond)
+        
+        # compose a parameter vector where cols = parameter types (tactil, visual, soa) and row = condition 
+        self.parameter = [[] for i in range(3)]
+        for i in self.activeConf["Tactil"]:        
+            for j in self.activeConf["Visual"]:
+                for k in self.activeConf["SOA"]:
+                    self.parameter[0].append(i)
+                    self.parameter[1].append(j)
+                    self.parameter[2].append(k)
+                    # print 'iterators are %f %f %f' %(i,j,k)
+
+        pyglet.clock.schedule_interval(self.update, self.updateTime)
+        
+    def stop(self, dt=0):
+        DrawableModule.stop(self, dt)
+        pyglet.clock.unschedule(self.update)
+        
+    def cleanup(self):
+        DrawableModule.cleanup(self)
+        
+    def update(self, dt):
+        # get current time
+        self.curTime = time()
+
+        # update settings after a stimulus pair is done
+        if (self.vibDone == True) and (self.flashDone == True) and (self.vibOn == False) and (self.flashOn == False):
+            
+            # fill in logs if required
+            if self.logActive:
+                # log time
+                line = [ self.controller.gTimeManager.experimentTime(), self.controller._currentRoutine, self.controller._currentCondition ]
+                # log coordinates
+                line.extend( [self.currentCond, max(self.cond), self.currentTactil, self.currentVisual, self.currentSOA, self.currentISI, self.nextVib, self.nextFlash ])
+                self.csvLogger.writerow(line)
+
+            # increment the iterator through the soa list till end of list is reached..
+            self.condIterator = self.condIterator + 1
+            # then shuffle the list and start reading form the first element on
+            if self.condIterator >= len(self.cond):
+                random.shuffle(self.cond)
+                self.condIterator = 0
+            
+            # set stimulus parameter for the next presentation based on condition shuffling
+            self.currentCond = self.cond[self.condIterator]
+            self.currentTactil = self.parameter[0][self.currentCond]
+            self.currentVisual = "%4d"%(self.parameter[1][self.currentCond])
+            self.currentSOA = self.parameter[2][self.currentCond]
+            
+            # print '##########################################################' 
+            # print 'current condition is %f' %(self.currentCond)
+            # print 'one %s two %s three %s four %s' %(self.currentVisual[0],self.currentVisual[1],self.currentVisual[2],self.currentVisual[3])
+            # print 'current visual is %s with length %d' %(self.currentVisual,len(self.currentVisual))
+            # print 'current row values are %f %s %f' %(self.currentTactil, self.currentVisual, self.currentSOA) 
+            
+            # pick a random ISI for the next presentation based on range
+            self.currentISI = random.uniform(self.isiRange[0],self.isiRange[1])
+            
+            self.nextVib = self.lastVib + self.currentISI
+            self.nextFlash = self.nextVib + self.currentSOA
+            self.vibDone = False
+            self.flashDone = False
+            self.vibOn = False
+            self.flashOn = False
+
+            
+            
+            
+        # Vibrator scheduling
+        # no vibration if previous isnt done and next is scheduled
+        if (self.curTime >= self.nextVib) and (self.vibDone == False):
+            self.pp.write(self.currentTactil, self.address) #write current trigger to the parallel port
+            print '#### try writing to LPT: %d' %(self.currentTactil)
+            
+            self.vibDone = False
+            self.vibOn = True
+            if self.curTime >= self.nextVib + self.durVib:
+                self.lastVib = self.curTime
+                self.vibDone = True
+                self.vibOn = False
+        else:
+            self.pp.write(0, self.address) #write zero to the parallel port
+
+        # Flash scheduling
+        # no flash if previous isnt done and next is scheduled
+        if (self.curTime >= self.nextFlash) and (self.flashDone == False):
+        
+            if self.currentVisual[0] is '1':
+                self.currentScale['visUL'] = self.scaleMax['visUL']
+            if self.currentVisual[1] is '1':
+                self.currentScale['visUR'] = self.scaleMax['visUR']
+            if self.currentVisual[2] is '1':
+                self.currentScale['visDL'] = self.scaleMax['visDL']
+            if self.currentVisual[3] is '1':
+                self.currentScale['visDR'] = self.scaleMax['visDR']
+                
+            self.flashDone = False
+            self.flashOn = True
+            
+            # set flash done if flash presentation time is up
+            if self.curTime >= self.nextFlash + self.durFlash:
+                self.flashDone = True
+                self.flashOn = False
+        else:
+            self.currentScale['visUL'] = self.scaleMin['visUL']
+            self.currentScale['visUR'] = self.scaleMin['visUR']
+            self.currentScale['visDL'] = self.scaleMin['visDL']
+            self.currentScale['visDR'] = self.scaleMin['visDR']
