@@ -1,0 +1,76 @@
+<ExpyVR version="0.003" encoding="utf-8" type="experiment">
+  <Settings>
+    <Python>
+      <ComponentPath directory="$EXPYVRROOT$/lncocomponents/"/>
+    </Python>
+    <Logger>
+      <Param name="expname" val="expyvr" valType="str"/>
+      <Param name="logtype" val="console" valType="str"/>
+      <Param name="logfreq" val="60" valType="int"/>
+      <Param name="savepath" val="$EXPYVRROOT$/log" valType="str"/>
+    </Logger>
+    <Display>
+      <Camera>
+        <Param name="posX" val="0.0" valType="float"/>
+        <Param name="posY" val="0.0" valType="float"/>
+        <Param name="posZ" val="0.0" valType="float"/>
+        <Param name="angleX" val="0.0" valType="float"/>
+        <Param name="angleY" val="0.0" valType="float"/>
+        <Param name="angleZ" val="0.0" valType="float"/>
+      </Camera>
+      <Windows>
+        <Window name="win 1">
+          <Param name="mode" val="mono" valType="str"/>
+          <Param name="size" val="(800, 600)" valType="code"/>
+          <Param name="fullscreen" val="False" valType="bool"/>
+          <Param name="screenid" val="1" valType="int"/>
+          <Param name="hidecursor" val="False" valType="bool"/>
+          <Param name="mousecameracontrol" val="False" valType="bool"/>
+          <Param name="flipScreen" val="False" valType="bool"/>
+          <Param name="mirror_3D" val="False" valType="bool"/>
+          <Param name="color" val="(0.0, 0.0, 0.0)" valType="code"/>
+          <Param name="fov" val="50.0" valType="float"/>
+          <Param name="focallength" val="0.1" valType="float"/>
+          <Param name="eyeseparation" val="0.001" valType="float"/>
+        </Window>
+      </Windows>
+    </Display>
+  </Settings>
+  <Components>
+    <Component type="ArduinoECG" importPath="tracker.ArduinoECGModule" name="ECG" enabled="True">
+      <InitConfig>
+        <Param name="baudrate" val="115200" valType="int"/>
+        <Param name="logToCSV" val="False" valType="bool"/>
+        <Param name="name" val="ECG" valType="str"/>
+        <Param name="port" val="COM3" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="alphaGlowPhaseShifted" val="False" valType="bool"/>
+          <Param name="displayDebug" val="False" valType="bool"/>
+          <Param name="asynchronous" val="False" valType="bool"/>
+          <Param name="asynchrony_percent" val="80" valType="int"/>
+          <Param name="alphaGlowDuration" val="500" valType="int"/>
+        </Config>
+      </Configs>
+    </Component>
+  </Components>
+  <Routines>
+    <Routine name="routine">
+      <Conditions>
+        <Condition name="default">
+          <UsedComponents>
+            <UsedComponent componentName="ECG" configName="standard" isGrouped="True"/>
+          </UsedComponents>
+          <RoutineFlow>
+            <Occurence type="activation" componentName="ECG" startTime="0.0" duration="-1.0"/>
+            <Occurence type="display" componentName="ECG" startTime="0.0" duration="-1.0"/>
+          </RoutineFlow>
+        </Condition>
+      </Conditions>
+    </Routine>
+  </Routines>
+  <AbstractExperimentFlow>
+    <Routine routineName="routine"/>
+  </AbstractExperimentFlow>
+</ExpyVR>

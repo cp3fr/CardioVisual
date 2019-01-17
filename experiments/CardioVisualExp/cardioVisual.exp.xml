@@ -22,7 +22,7 @@
         <Window name="win 1">
           <Param name="mode" val="mono" valType="str"/>
           <Param name="size" val="(800, 600)" valType="code"/>
-          <Param name="fullscreen" val="True" valType="bool"/>
+          <Param name="fullscreen" val="False" valType="bool"/>
           <Param name="screenid" val="1" valType="int"/>
           <Param name="hidecursor" val="False" valType="bool"/>
           <Param name="mousecameracontrol" val="False" valType="bool"/>
@@ -48,8 +48,8 @@
         <Config name="standard">
           <Param name="alphaGlowPhaseShifted" val="False" valType="bool"/>
           <Param name="displayDebug" val="False" valType="bool"/>
-          <Param name="asynchronous" val="True" valType="bool"/>
-          <Param name="asynchrony_percent" val="80" valType="int"/>
+          <Param name="asynchronous" val="False" valType="bool"/>
+          <Param name="asynchrony_percent" val="100" valType="int"/>
           <Param name="alphaGlowDuration" val="500" valType="int"/>
         </Config>
       </Configs>
@@ -136,7 +136,7 @@
         </Config>
       </Configs>
     </Component>
-    <Component type="networkUDP" importPath="scene.networkUDP" name="udp_handler" enabled="True">
+    <Component type="networkUDP" importPath="scene.networkUDP" name="udp_handler" enabled="False">
       <InitConfig>
         <Param name="logToCSV" val="False" valType="bool"/>
         <Param name="alternative_IP" val="127.0.0.1" valType="str"/>
@@ -150,7 +150,7 @@
         </Config>
       </Configs>
     </Component>
-    <Component type="Tobii" importPath="tobii.tobii" name="tobii" enabled="True">
+    <Component type="Tobii" importPath="tobii.tobii" name="tobii" enabled="False">
       <InitConfig>
         <Param name="calibrationFile" val="$EXPYVRROOT$/lncocomponents/tobii/calibration.csv" valType="str"/>
         <Param name="calibrationMode" val="False" valType="bool"/>
@@ -164,7 +164,7 @@
         </Config>
       </Configs>
     </Component>
-    <Component type="PythonScript" importPath="scene.pythonScript" name="scriptTobii" enabled="True">
+    <Component type="PythonScript" importPath="scene.pythonScript" name="scriptTobii" enabled="False">
       <InitConfig>
         <Param name="cleanupCode" val="" valType="str"/>
         <Param name="name" val="scriptTobii" valType="str"/>
@@ -192,7 +192,7 @@
           </UsedComponents>
           <RoutineFlow>
             <Occurence type="activation" componentName="ecg" startTime="0.0" duration="20.0"/>
-            <Occurence type="display" componentName="ecg" startTime="0.0" duration="0.0"/>
+            <Occurence type="display" componentName="ecg" startTime="0.0" duration="20.0"/>
             <Occurence type="activation" componentName="imgLeft" startTime="0.0" duration="20.0"/>
             <Occurence type="display" componentName="imgLeft" startTime="0.0" duration="20.0"/>
             <Occurence type="activation" componentName="imgRight" startTime="0.0" duration="20.0"/>
@@ -217,7 +217,7 @@
           </UsedComponents>
           <RoutineFlow>
             <Occurence type="activation" componentName="ecg" startTime="0.0" duration="20.0"/>
-            <Occurence type="display" componentName="ecg" startTime="0.0" duration="0.0"/>
+            <Occurence type="display" componentName="ecg" startTime="0.0" duration="20.0"/>
             <Occurence type="activation" componentName="imgLeft" startTime="0.0" duration="20.0"/>
             <Occurence type="display" componentName="imgLeft" startTime="0.0" duration="20.0"/>
             <Occurence type="activation" componentName="imgRight" startTime="0.0" duration="20.0"/>

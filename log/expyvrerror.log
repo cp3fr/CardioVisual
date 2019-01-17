@@ -232,3 +232,316 @@ Traceback (most recent call last):
   File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\serial\serialwin32.py", line 56, in open
     raise SerialException("could not open port %s: %s" % (self.portstr, ctypes.WinError()))
 SerialException: could not open port COM3: [Error 5] Access is denied.
+
+Time: 17 Jan 2019 10:08:36:
+Traceback (most recent call last):
+  File "runexperiment.py", line 95, in <module>
+    cont.startExperiment(closeWindowOnExit)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 90, in startExperiment
+    pyglet.app.run()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\__init__.py", line 264, in run
+    EventLoop().run()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\win32.py", line 63, in run
+    self._timer_func(0, 0, timer, 0)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\win32.py", line 84, in _timer_func
+    sleep_time = self.idle()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\__init__.py", line 187, in idle
+    dt = clock.tick(True)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\clock.py", line 700, in tick
+    return _default.tick(poll)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\clock.py", line 303, in tick
+    item.func(ts - item.last_ts, *item.args, **item.kwargs)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 191, in _startNextEvent
+    self._startRoutine(rName, fObj.attribs['condition'])
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 244, in _startRoutine
+    compObj.start(duration=duration, configName=configName)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 88, in start
+    self.update(0)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 79, in update
+    exec( self.updatecode[self.activeConfName] )
+  File "<string>", line 10, in <module>
+AttributeError: ModuleMain instance has no attribute 'beat'
+
+Time: 17 Jan 2019 12:33:34:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 90
+     def addBeat(self,t)
+                       ^
+ SyntaxError: invalid syntax
+
+Time: 17 Jan 2019 12:34:49:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\lncocomponents\tracker\ArduinoECGModule.py", line 305, in __init__
+    self.sensor = Arduino(port=self.initConf['port'], baudrate=115200)
+  File "C:\Users\pfeif\Repos\CardioVisual\lncocomponents\tracker\ArduinoECGModule.py", line 34, in __init__
+    serial.Serial.__init__(self, *args, **kwargs)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\serial\serialwin32.py", line 30, in __init__
+    SerialBase.__init__(self, *args, **kwargs)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\serial\serialutil.py", line 260, in __init__
+    self.open()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\serial\serialwin32.py", line 56, in open
+    raise SerialException("could not open port %s: %s" % (self.portstr, ctypes.WinError()))
+SerialException: could not open port COM3: [Error 5] Access is denied.
+
+Time: 17 Jan 2019 12:35:09:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 90
+     def addBeat(self,t)
+                       ^
+ SyntaxError: invalid syntax
+
+Time: 17 Jan 2019 12:39:01:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 126
+     
+    ^
+ IndentationError: unexpected indent
+
+Time: 17 Jan 2019 12:39:50:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 19, in <module>
+NameError: name 'ReplayBuffer' is not defined
+
+Time: 17 Jan 2019 12:42:02:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 19, in <module>
+NameError: name 'ReplayBuffer' is not defined
+
+Time: 17 Jan 2019 12:42:37:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 2, in <module>
+ImportError: No module named ReplayBuffer
+
+Time: 17 Jan 2019 12:45:07:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 2, in <module>
+ImportError: No module named ReplayBuffer
+
+Time: 17 Jan 2019 12:58:26:
+Traceback (most recent call last):
+  File "runexperiment.py", line 95, in <module>
+    cont.startExperiment(closeWindowOnExit)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 90, in startExperiment
+    pyglet.app.run()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\__init__.py", line 264, in run
+    EventLoop().run()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\win32.py", line 63, in run
+    self._timer_func(0, 0, timer, 0)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\win32.py", line 84, in _timer_func
+    sleep_time = self.idle()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\__init__.py", line 187, in idle
+    dt = clock.tick(True)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\clock.py", line 700, in tick
+    return _default.tick(poll)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\clock.py", line 295, in tick
+    item.func(delta_t, *item.args, **item.kwargs)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 79, in update
+    exec( self.updatecode[self.activeConfName] )
+  File "<string>", line 24, in <module>
+  File "<string>", line 76, in addBeat
+TypeError: object of type 'bool' has no len()
+
+Time: 17 Jan 2019 13:01:19:
+Traceback (most recent call last):
+  File "runexperiment.py", line 95, in <module>
+    cont.startExperiment(closeWindowOnExit)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 90, in startExperiment
+    pyglet.app.run()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\__init__.py", line 264, in run
+    EventLoop().run()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\win32.py", line 63, in run
+    self._timer_func(0, 0, timer, 0)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\win32.py", line 84, in _timer_func
+    sleep_time = self.idle()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\__init__.py", line 187, in idle
+    dt = clock.tick(True)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\clock.py", line 700, in tick
+    return _default.tick(poll)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\clock.py", line 295, in tick
+    item.func(delta_t, *item.args, **item.kwargs)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 79, in update
+    exec( self.updatecode[self.activeConfName] )
+  File "<string>", line 24, in <module>
+  File "<string>", line 76, in addBeat
+TypeError: object of type 'bool' has no len()
+
+Time: 17 Jan 2019 13:06:23:
+Traceback (most recent call last):
+  File "runexperiment.py", line 95, in <module>
+    cont.startExperiment(closeWindowOnExit)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 90, in startExperiment
+    pyglet.app.run()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\__init__.py", line 264, in run
+    EventLoop().run()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\win32.py", line 63, in run
+    self._timer_func(0, 0, timer, 0)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\win32.py", line 84, in _timer_func
+    sleep_time = self.idle()
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\app\__init__.py", line 187, in idle
+    dt = clock.tick(True)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\clock.py", line 700, in tick
+    return _default.tick(poll)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\site-packages\pyglet\clock.py", line 303, in tick
+    item.func(ts - item.last_ts, *item.args, **item.kwargs)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 191, in _startNextEvent
+    self._startRoutine(rName, fObj.attribs['condition'])
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 244, in _startRoutine
+    compObj.start(duration=duration, configName=configName)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 88, in start
+    self.update(0)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 79, in update
+    exec( self.updatecode[self.activeConfName] )
+  File "<string>", line 16, in <module>
+  File "<string>", line 51, in newRun
+  File "<string>", line 59, in scheduleNextBeat
+NameError: global name 'percentage' is not defined
+
+Time: 17 Jan 2019 13:19:49:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 72, in __init__
+    self.updatecode[confName] = compile( code, '<string>', 'exec' )
+  File "<string>", line 20
+     if self.starting:
+                     ^
+ SyntaxError: invalid syntax
+
+Time: 17 Jan 2019 13:36:40:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 139, in <module>
+NameError: name 'path' is not defined
