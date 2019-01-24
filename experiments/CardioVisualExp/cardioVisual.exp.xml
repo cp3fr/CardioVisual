@@ -37,34 +37,10 @@
     </Display>
   </Settings>
   <Components>
-    <Component type="BillboardImageList" importPath="billboard.billboardImageList" name="ImageListRight" enabled="True">
-      <InitConfig>
-        <Param name="files" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/Picture *.jpg" valType="str"/>
-        <Param name="preload" val="True" valType="bool"/>
-        <Param name="logToCSV" val="False" valType="bool"/>
-        <Param name="keys" val="" valType="str"/>
-        <Param name="name" val="ImageListRight" valType="str"/>
-      </InitConfig>
-      <Configs>
-        <Config name="standard">
-          <Param name="index" val="0.0" valType="code"/>
-          <Param name="stereo" val="both" valType="str"/>
-          <Param name="scale" val="0.2" valType="float"/>
-          <Param name="angle" val="0.0" valType="float"/>
-          <Param name="pause_on_start" val="False" valType="bool"/>
-          <Param name="flip" val="False" valType="bool"/>
-          <Param name="depth" val="1.5" valType="float"/>
-          <Param name="alpha" val="1.0" valType="float"/>
-          <Param name="y" val="0.0" valType="float"/>
-          <Param name="x" val="0.7" valType="float"/>
-          <Param name="aspectratio" val="1.0" valType="float"/>
-        </Config>
-      </Configs>
-    </Component>
     <Component type="BillboardImageList" importPath="billboard.billboardImageList" name="ImageListLeft" enabled="True">
       <InitConfig>
-        <Param name="files" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/Picture *.jpg" valType="str"/>
-        <Param name="preload" val="True" valType="bool"/>
+        <Param name="files" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/img*.jpg" valType="str"/>
+        <Param name="preload" val="False" valType="bool"/>
         <Param name="logToCSV" val="False" valType="bool"/>
         <Param name="keys" val="" valType="str"/>
         <Param name="name" val="ImageListLeft" valType="str"/>
@@ -73,14 +49,38 @@
         <Config name="standard">
           <Param name="index" val="0.0" valType="code"/>
           <Param name="stereo" val="both" valType="str"/>
-          <Param name="scale" val="0.2" valType="float"/>
+          <Param name="scale" val="0.5" valType="float"/>
           <Param name="angle" val="0.0" valType="float"/>
           <Param name="pause_on_start" val="False" valType="bool"/>
           <Param name="flip" val="False" valType="bool"/>
           <Param name="depth" val="1.5" valType="float"/>
           <Param name="alpha" val="1.0" valType="float"/>
           <Param name="y" val="0.0" valType="float"/>
-          <Param name="x" val="0.3" valType="float"/>
+          <Param name="x" val="-0.6" valType="float"/>
+          <Param name="aspectratio" val="1.0" valType="float"/>
+        </Config>
+      </Configs>
+    </Component>
+    <Component type="BillboardImageList" importPath="billboard.billboardImageList" name="ImageListRight" enabled="True">
+      <InitConfig>
+        <Param name="files" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/img*.jpg" valType="str"/>
+        <Param name="preload" val="False" valType="bool"/>
+        <Param name="logToCSV" val="False" valType="bool"/>
+        <Param name="keys" val="" valType="str"/>
+        <Param name="name" val="ImageListRight" valType="str"/>
+      </InitConfig>
+      <Configs>
+        <Config name="standard">
+          <Param name="index" val="0.0" valType="code"/>
+          <Param name="stereo" val="both" valType="str"/>
+          <Param name="scale" val="0.5" valType="float"/>
+          <Param name="angle" val="0.0" valType="float"/>
+          <Param name="pause_on_start" val="False" valType="bool"/>
+          <Param name="flip" val="False" valType="bool"/>
+          <Param name="depth" val="1.5" valType="float"/>
+          <Param name="alpha" val="1.0" valType="float"/>
+          <Param name="y" val="0.0" valType="float"/>
+          <Param name="x" val="0.6" valType="float"/>
           <Param name="aspectratio" val="1.0" valType="float"/>
         </Config>
       </Configs>
@@ -102,70 +102,6 @@
         </Config>
       </Configs>
     </Component>
-    <Component type="BillboardImage" importPath="billboard.billboardImage" name="imgLeft" enabled="True">
-      <InitConfig>
-        <Param name="keyboard_movable" val="False" valType="bool"/>
-        <Param name="name" val="imgLeft" valType="str"/>
-      </InitConfig>
-      <Configs>
-        <Config name="pic1">
-          <Param name="filename" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/pic1.png" valType="str"/>
-        </Config>
-        <Config name="pic2">
-          <Param name="filename" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/pic2.png" valType="str"/>
-        </Config>
-        <Config name="standard">
-          <Param name="hsplit_image" val="False" valType="bool"/>
-          <Param name="pause_on_start" val="False" valType="bool"/>
-          <Param name="stereo" val="both" valType="str"/>
-          <Param name="scale" val="0.2" valType="float"/>
-          <Param name="angle" val="0.0" valType="float"/>
-          <Param name="rotationY" val="0.0" valType="float"/>
-          <Param name="rotationX" val="0.0" valType="float"/>
-          <Param name="mask" val="" valType="str"/>
-          <Param name="flip" val="False" valType="bool"/>
-          <Param name="filename" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/pic1.png" valType="str"/>
-          <Param name="face_camera" val="False" valType="bool"/>
-          <Param name="depth" val="1.5" valType="float"/>
-          <Param name="alpha" val="1.0" valType="float"/>
-          <Param name="y" val="0.0" valType="float"/>
-          <Param name="x" val="-0.7" valType="float"/>
-          <Param name="aspectratio" val="1.0" valType="float"/>
-        </Config>
-      </Configs>
-    </Component>
-    <Component type="BillboardImage" importPath="billboard.billboardImage" name="imgRight" enabled="True">
-      <InitConfig>
-        <Param name="keyboard_movable" val="False" valType="bool"/>
-        <Param name="name" val="imgRight" valType="str"/>
-      </InitConfig>
-      <Configs>
-        <Config name="pic1">
-          <Param name="filename" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/pic1.png" valType="str"/>
-        </Config>
-        <Config name="pic2">
-          <Param name="filename" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/pic2.png" valType="str"/>
-        </Config>
-        <Config name="standard">
-          <Param name="hsplit_image" val="False" valType="bool"/>
-          <Param name="pause_on_start" val="False" valType="bool"/>
-          <Param name="stereo" val="both" valType="str"/>
-          <Param name="scale" val="0.2" valType="float"/>
-          <Param name="angle" val="0.0" valType="float"/>
-          <Param name="rotationY" val="0.0" valType="float"/>
-          <Param name="rotationX" val="0.0" valType="float"/>
-          <Param name="mask" val="" valType="str"/>
-          <Param name="flip" val="False" valType="bool"/>
-          <Param name="filename" val="$EXPYVRROOT$/experiments/CardioVisualExp/stim/pic1.png" valType="str"/>
-          <Param name="face_camera" val="False" valType="bool"/>
-          <Param name="depth" val="1.5" valType="float"/>
-          <Param name="alpha" val="1.0" valType="float"/>
-          <Param name="y" val="0.0" valType="float"/>
-          <Param name="x" val="0.7" valType="float"/>
-          <Param name="aspectratio" val="1.0" valType="float"/>
-        </Config>
-      </Configs>
-    </Component>
     <Component type="PythonScript" importPath="scene.pythonScript" name="scriptEcg" enabled="True">
       <InitConfig>
         <Param name="cleanupCode" val="" valType="str"/>
@@ -173,12 +109,6 @@
         <Param name="initCode" val="$EXPYVRROOT$/experiments/CardioVisualExp/script/initImage.py" valType="str"/>
       </InitConfig>
       <Configs>
-        <Config name="LeftIsSync">
-          <Param name="updateCode" val="$EXPYVRROOT$/experiments/CardioVisualExp/script/updateImage.py" valType="str"/>
-        </Config>
-        <Config name="RightIsSync">
-          <Param name="updateCode" val="$EXPYVRROOT$/experiments/CardioVisualExp/script/updateImage.py" valType="str"/>
-        </Config>
         <Config name="standard">
           <Param name="updateCode" val="$EXPYVRROOT$/experiments/CardioVisualExp/script/updateImage.py" valType="str"/>
         </Config>
@@ -228,48 +158,23 @@
   <Routines>
     <Routine name="routine">
       <Conditions>
-        <Condition name="LeftSync">
+        <Condition name="default">
           <UsedComponents>
+            <UsedComponent componentName="ImageListLeft" configName="standard" isGrouped="True"/>
+            <UsedComponent componentName="ImageListRight" configName="standard" isGrouped="True"/>
             <UsedComponent componentName="ecg" configName="standard" isGrouped="True"/>
-            <UsedComponent componentName="imgLeft" configName="pic1" isGrouped="True"/>
-            <UsedComponent componentName="imgRight" configName="pic2" isGrouped="True"/>
-            <UsedComponent componentName="scriptEcg" configName="LeftIsSync" isGrouped="True"/>
+            <UsedComponent componentName="scriptEcg" configName="standard" isGrouped="True"/>
             <UsedComponent componentName="udp_handler" configName="standard" isGrouped="True"/>
             <UsedComponent componentName="tobii" configName="standard" isGrouped="True"/>
             <UsedComponent componentName="scriptTobii" configName="standard" isGrouped="True"/>
           </UsedComponents>
           <RoutineFlow>
+            <Occurence type="activation" componentName="ImageListLeft" startTime="0.0" duration="20.0"/>
+            <Occurence type="display" componentName="ImageListLeft" startTime="0.0" duration="20.0"/>
+            <Occurence type="activation" componentName="ImageListRight" startTime="0.0" duration="20.0"/>
+            <Occurence type="display" componentName="ImageListRight" startTime="0.0" duration="20.0"/>
             <Occurence type="activation" componentName="ecg" startTime="0.0" duration="20.0"/>
             <Occurence type="display" componentName="ecg" startTime="0.0" duration="20.0"/>
-            <Occurence type="activation" componentName="imgLeft" startTime="0.0" duration="20.0"/>
-            <Occurence type="display" componentName="imgLeft" startTime="0.0" duration="20.0"/>
-            <Occurence type="activation" componentName="imgRight" startTime="0.0" duration="20.0"/>
-            <Occurence type="display" componentName="imgRight" startTime="0.0" duration="20.0"/>
-            <Occurence type="activation" componentName="scriptEcg" startTime="0.0" duration="20.0"/>
-            <Occurence type="activation" componentName="udp_handler" startTime="0.0" duration="20.0"/>
-            <Occurence type="display" componentName="udp_handler" startTime="0.0" duration="20.0"/>
-            <Occurence type="activation" componentName="tobii" startTime="0.0" duration="20.0"/>
-            <Occurence type="display" componentName="tobii" startTime="0.0" duration="20.0"/>
-            <Occurence type="activation" componentName="scriptTobii" startTime="0.0" duration="20.0"/>
-          </RoutineFlow>
-        </Condition>
-        <Condition name="RightSync">
-          <UsedComponents>
-            <UsedComponent componentName="ecg" configName="standard" isGrouped="True"/>
-            <UsedComponent componentName="imgLeft" configName="pic2" isGrouped="True"/>
-            <UsedComponent componentName="imgRight" configName="pic1" isGrouped="True"/>
-            <UsedComponent componentName="scriptEcg" configName="RightIsSync" isGrouped="True"/>
-            <UsedComponent componentName="udp_handler" configName="standard" isGrouped="True"/>
-            <UsedComponent componentName="tobii" configName="standard" isGrouped="True"/>
-            <UsedComponent componentName="scriptTobii" configName="standard" isGrouped="True"/>
-          </UsedComponents>
-          <RoutineFlow>
-            <Occurence type="activation" componentName="ecg" startTime="0.0" duration="20.0"/>
-            <Occurence type="display" componentName="ecg" startTime="0.0" duration="20.0"/>
-            <Occurence type="activation" componentName="imgLeft" startTime="0.0" duration="20.0"/>
-            <Occurence type="display" componentName="imgLeft" startTime="0.0" duration="20.0"/>
-            <Occurence type="activation" componentName="imgRight" startTime="0.0" duration="20.0"/>
-            <Occurence type="display" componentName="imgRight" startTime="0.0" duration="20.0"/>
             <Occurence type="activation" componentName="scriptEcg" startTime="0.0" duration="20.0"/>
             <Occurence type="activation" componentName="udp_handler" startTime="0.0" duration="20.0"/>
             <Occurence type="display" componentName="udp_handler" startTime="0.0" duration="20.0"/>
@@ -282,10 +187,9 @@
     </Routine>
   </Routines>
   <AbstractExperimentFlow>
-    <LoopInitiator type="ShuffleLoop" name="shuffle">
-      <Param name="nReps" val="4" valType="int"/>
-      <Param name="set" val="LeftSync,LeftSync,RightSync,RightSync" valType="str"/>
-      <Param name="name" val="shuffle" valType="str"/>
+    <LoopInitiator type="FixLoop" name="loop8x">
+      <Param name="nReps" val="8" valType="int"/>
+      <Param name="name" val="loop8x" valType="str"/>
     </LoopInitiator>
     <Routine routineName="routine"/>
     <Isi name="isi">
@@ -293,6 +197,6 @@
       <Param name="randomize" val="True" valType="bool"/>
       <Param name="name" val="isi" valType="str"/>
     </Isi>
-    <LoopTerminator name="shuffle"/>
+    <LoopTerminator name="loop8x"/>
   </AbstractExperimentFlow>
 </ExpyVR>

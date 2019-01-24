@@ -189,31 +189,28 @@ self.buffer = ReplayBuffer()
 #load randomization information from text file
 f = open(getPathFromString('$EXPYVRROOT$/experiments/CardioVisualExp/rand.txt'), 'r')
 
+#regular expression to match
+regexp = re.compile('([-+]?\d*)[,]([-+]?\d*)[,]([-+]?\d*)[,]([-+]?\d*)')
+
 #empty randomization file
 self.rand = []
-
-p = re.compile('[0-9],[0-9],[0-9],[0-9]')
 
 #loop over lines
 for line in f:
     
-    x = p.match(line)
+    #retrieve values by regular expression matching
+    vals = regexp.match(line)
+
+    #if a match was found..
+    if vals is not None:
     
-    print(x)
-    
-print(self.rand)
+        #...add data to randomization file
+        self.rand.append([float(vals.group(1)), float(vals.group(2)),float(vals.group(3)), float(vals.group(4))])
 
 #close the file
 f.close()
 
+print('----- RAND FILE INFO ------------')
 
-
-
-
-#load randomization file
-self.rand = [
-[0,1,0,1],
-[1,2,0,1],
-[2,3,0,1],
-[3,4,0,1]
-]
+for line in self.rand:
+    print(line)

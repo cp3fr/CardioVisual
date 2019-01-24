@@ -1279,3 +1279,102 @@ Traceback (most recent call last):
     exec( f.read() )
   File "<string>", line 200, in <module>
 TypeError: object of type '_sre.SRE_Match' has no len()
+
+Time: 24 Jan 2019 18:28:44:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 195, in <module>
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\re.py", line 190, in compile
+    return _compile(pattern, flags)
+  File "C:\Users\pfeif\Repos\CardioVisual\python26\lib\re.py", line 245, in _compile
+    raise error, v # invalid expression
+error: nothing to repeat
+
+Time: 24 Jan 2019 18:29:08:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 200, in <module>
+AttributeError: ModuleMain instance has no attribute 'regexp'
+
+Time: 24 Jan 2019 18:29:45:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 200, in <module>
+AttributeError: ModuleMain instance has no attribute 'inputMsg'
+
+Time: 24 Jan 2019 18:30:00:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 203, in <module>
+IndexError: no such group
+
+Time: 24 Jan 2019 18:30:27:
+Traceback (most recent call last):
+  File "runexperiment.py", line 78, in <module>
+    cont.loadExperiment(arg)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 77, in loadExperiment
+    self._loadExpInstance(filename)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 302, in _loadExpInstance
+    self._loadExpOverview(os.path.join(filepath, expNode.attrib['fileName']))
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 335, in _loadExpOverview
+    self._loadComponents(tree)      # Load Components
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 478, in _loadComponents
+    self._importModule(comp)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\controller\maincontrol.py", line 557, in _importModule
+    curComp = mymodule.ModuleMain(self, initConfig=comp.initParams, runConfigs=comp.params)
+  File "C:\Users\pfeif\Repos\CardioVisual\expyvr\src\scene\pythonScript.py", line 54, in __init__
+    exec( f.read() )
+  File "<string>", line 207, in <module>
+IndexError: no such group

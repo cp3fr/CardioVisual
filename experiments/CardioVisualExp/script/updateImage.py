@@ -29,8 +29,8 @@ if self.starting:
 
     
 #set the picture stimuli according to randomization info   
-self.imgLeft.index = float(self.rand[self.numTrial][0])
-self.imgRight.index = float(self.rand[self.numTrial][1])
+self.imgLeft.index = self.rand[self.numTrial][0]
+self.imgRight.index = self.rand[self.numTrial][1]
     
 
 #--- Sim Mode or Real Heartbat Recording ? -------------------------------------------------------
@@ -62,11 +62,11 @@ else:
     
 #--- Left Stimulus Scheduling ----------------------------------------------------------------
  
-#if stimlus is off..
+#if stimulus is off..
 if not self.stimOnLeft:
 
-    #..check if there is a synch heartbeat..
-    if self.buffer.getRealBeat():
+    #..check if SYNCH mode required and whether there is a synch heartbeat..
+    if ( self.rand[self.numTrial][2] == 1.0 ) and ( self.buffer.getRealBeat() ):
     
         #..set stimulus to high alpha
         self.imgLeft.alpha = self.alphaHigh  
@@ -79,6 +79,21 @@ if not self.stimOnLeft:
     
         #..record current time of real heartbeat to buffer
         self.buffer.addBeat(currTime)
+        
+    #..check if ASYNCH mode is required and whether there is a asynch heartbeat..
+    elif ( self.rand[self.numTrial][2] == 0.0 ) and ( self.buffer.getBeat(currTime) ):
+    
+        #..set stimulus to high alpha
+        self.imgLeft.alpha = self.alphaHigh  
+        
+        #..flag stimulus as on
+        self.stimOnLeft = True
+    
+        #..save stimlus on time
+        self.onTimeLeft = currTime
+    
+        #..schedule next asynch beat
+        self.buffer.scheduleNextBeat(currTime)
 
 #if stimulus is on..        
 else:
@@ -93,33 +108,48 @@ else:
         self.stimOnLeft = False
         
    
-#--- Right Stimulus Scheduling ---------------------------------------------------------------
-  
+#--- Right Stimulus Scheduling ----------------------------------------------------------------
+ 
 #if stimulus is off..
 if not self.stimOnRight:
 
-    #..check whether there is currently a asynch heartbeat..
-    if self.buffer.getBeat(currTime):
+    #..check if SYNCH mode required and whether there is a synch heartbeat..
+    if ( self.rand[self.numTrial][3] == 1.0 ) and ( self.buffer.getRealBeat() ):
     
         #..set stimulus to high alpha
-        self.imgRight.alpha = self.alphaHigh
+        self.imgRight.alpha = self.alphaHigh  
         
         #..flag stimulus as on
         self.stimOnRight = True
-        
-        #..save stimulus on time
+    
+        #..save stimlus on time
         self.onTimeRight = currTime
+    
+        #..record current time of real heartbeat to buffer
+        self.buffer.addBeat(currTime)
         
+    #..check if ASYNCH mode is required and whether there is a asynch heartbeat..
+    elif ( self.rand[self.numTrial][3] == 0.0 ) and ( self.buffer.getBeat(currTime) ):
+    
+        #..set stimulus to high alpha
+        self.imgRight.alpha = self.alphaHigh  
+        
+        #..flag stimulus as on
+        self.stimOnRight = True
+    
+        #..save stimlus on time
+        self.onTimeRight = currTime
+    
         #..schedule next asynch beat
         self.buffer.scheduleNextBeat(currTime)
-        
-#if stimlus is on..      
+
+#if stimulus is on..        
 else:
 
     #..check if stimulus on time has passed..
     if time()-self.onTimeRight > self.stimOnDuration:
-        
-        #..set stimulus to low alpha
+    
+        #..set stimlus to low alpha
         self.imgRight.alpha = self.alphaLow
         
         #..flag stimlus as off
