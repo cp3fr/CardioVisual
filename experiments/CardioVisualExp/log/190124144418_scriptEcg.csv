@@ -1,0 +1,7 @@
+time,trial,percentAsynch,beatSynch,beatAsynch,stimLeft,stimRight,stimLeftIndex,stimRightIndex
+2.5773537,1,120.0,True,False,True,False,0,1
+3.5924827,1,120.0,True,False,True,True,0,1
+4.5972211,1,120.0,True,False,True,False,0,1
+5.6087378,1,120.0,True,False,True,False,0,1
+6.6263978,1,120.0,True,False,True,False,0,1
+7.6393922,1,120.0,True,False,True,False,0,1

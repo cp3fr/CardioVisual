@@ -1,0 +1,13 @@
+<ExpyVR version="0.003" encoding="utf-8" type="instance">
+  <Experiment fileName="cardioVisual2.exp.xml"/>
+  <ExperimentFlow>
+    <Routine routineName="routine" condition="LeftSync"/>
+    <Isi name="isi" duration="1.0"/>
+    <Routine routineName="routine" condition="RightSync"/>
+    <Isi name="isi" duration="1.0"/>
+    <Routine routineName="routine" condition="LeftSync"/>
+    <Isi name="isi" duration="1.0"/>
+    <Routine routineName="routine" condition="RightSync"/>
+    <Isi name="isi" duration="1.0"/>
+  </ExperimentFlow>
+</ExpyVR>

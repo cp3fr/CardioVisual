@@ -1,65 +1,3 @@
-#import libraries
-import csv
-import re
-from os import path
-from time import time
-from controller import getPathFromString
-
-
-#--- Settings to be done by hand --------------------------------------------------------
-
-#Whether to simulate heartbeats
-self.simMode = True
-
-#Interbeat intervals for [synch, asynch] conditions during simulation mode
-self.simISI = 1.0
-
-#percent duration of the original interbeat interval 
-self.asynchPercent = 120.0
-
-#alpha values for glow effect
-self.alphaLow = 0.5
-self.alphaHigh = 1.0
-
-#on time of stimulus after beat detected
-self.stimOnDuration = 0.2
-
-#-------------------------------------------------------------------------------------------
-
-#if not in sim mode, connect to the ECG module
-if not self.simMode:
-    self.ecg = self.controller.gModuleList['ecg']
-    
-#connect to modules for left and right image presentation
-self.imgLeft = self.controller.gModuleList['ImageListLeft']
-self.imgRight = self.controller.gModuleList['ImageListRight']
-
-#set default image indices
-self.imgLeft.index = 0.0
-self.imgRight.index = 0.0
-
-#runtime variables left stim
-self.onTimeLeft = 0.0
-self.stimOnLeft = False
-
-#runtime variables right stim
-self.onTimeRight = 0.0
-self.stimOnRight = False
-
-#number of trial
-self.numTrial = -1
-
-#time of the next beat
-self.simNextBeat = -1
-
-#prepare output logging
-now = datetime.today()
-self.csvLogger = csv.writer(open(path.join(self.controller.gLogger.Path, now.strftime('%y%m%d%H%M%S_') + self.initConf['name'] +  '.csv') , 'w'), lineterminator = '\n')
-hdr = ['time','trial','percentAsynch','beatSynch','beatAsynch','stimLeft','stimRight','stimLeftIndex','stimRightIndex']
-self.csvLogger.writerow(hdr)
-
-
-#---Start of Replay Buffer Class---------------------------------------------------
 class ReplayBuffer(object):
 
     #initialization of variables
@@ -179,41 +117,7 @@ class ReplayBuffer(object):
     def getRealBeat(self):
         return self.realBeat
       
-#---End of Replay Buffer Class---------------------------------------------------       
+        
+        
     
-#create object of the ReplayBuffer class, responsible for recording heartbeats and scheduling
-#asynch heartbeats on the following trial
-#the object also takes a copy of the real heartbeat and gives it back when desired
-self.buffer = ReplayBuffer()
-
-#load randomization information from text file
-f = open(getPathFromString('$EXPYVRROOT$/experiments/CardioVisualExp/rand.txt'), 'r')
-
-#empty randomization file
-self.rand = []
-
-p = re.compile('[0-9],[0-9],[0-9],[0-9]')
-
-#loop over lines
-for line in f:
     
-    x = p.match(line)
-    
-    print(x)
-    
-print(self.rand)
-
-#close the file
-f.close()
-
-
-
-
-
-#load randomization file
-self.rand = [
-[0,1,0,1],
-[1,2,0,1],
-[2,3,0,1],
-[3,4,0,1]
-]
